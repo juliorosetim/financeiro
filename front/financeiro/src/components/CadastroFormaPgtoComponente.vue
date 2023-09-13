@@ -8,7 +8,7 @@
           <v-label for="nome">Forma de pagamento:</v-label>
           <input type="text" id="deFormaPagto" v-model="deFormaPagto" required />
         </div>
-        <v-btn @click="cadastrarFormaPagto">Cadastrar</v-btn>
+        <v-btn @click="cadastrarFormaPagto" style=" margin-right: 10px">Cadastrar</v-btn>
         <v-btn @click="cancelar">Cancelar</v-btn>
       </div>
     </v-card>
@@ -57,6 +57,11 @@ const formasPagto = ref([]);
 
 
 const cadastrarFormaPagto = () => {
+  if (deFormaPagto.value === "") {
+    alert("Preencha o campo forma de pagamento!")
+    return
+  }
+
   axios.post('http://localhost:8081/api/formapagto', {
     deFormaPagto: deFormaPagto.value,
   })

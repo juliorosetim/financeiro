@@ -25,7 +25,7 @@
           <v-label for="ativo">Ativo:</v-label>
           <input type="checkbox" id="ativo" v-model="ativo" />
         </div>
-        <v-btn @click="cadastrarUsuario">Cadastrar</v-btn>
+        <v-btn @click="cadastrarUsuario" style=" margin-right: 10px">Cadastrar</v-btn>
         <v-btn @click="cancelar">Cancelar</v-btn>
       </div>
     </v-card>
@@ -39,7 +39,8 @@
               <tr>
                 <th class="text-left" style="width: 100px;">Código</th>
                 <th class="text-left" style="width: 700px;">Nome</th>
-                <th class="text-left" style="width: 100px;">Senha</th>
+                <!-- <th class="text-left" style="width: 100px;">Senha</th> -->
+                <th class="text-left" style="width: 100px;"></th>
                 <th class="text-left" style="width: 100px;">Ativo</th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
@@ -49,11 +50,11 @@
               <tr v-for="usuario in usuarios" :key="usuario.cdUsuario">
                 <td>{{ usuario.cdUsuario }}</td>
                 <td>{{ usuario.deUsuario }}</td>
-                <td>{{ usuario.senha }}</td>
+                <!-- <td>{{ usuario.senha }}</td> -->
+                <td></td>
                 <td>{{ usuario.flAtivo }}</td>
                 <td><v-btn @click="exibirUsuario(usuario)">Exibir</v-btn></td>
                 <td>
-                  
                   <v-btn @click="excluirUsuario(usuario.cdUsuario)">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
@@ -217,5 +218,10 @@ tr:nth-child(even) {
 
 .v-btn:hover {
   background-color: #0056b3;
+}
+
+.password {
+  border: none;
+  cursor: not-allowed;
 }
   </style>  

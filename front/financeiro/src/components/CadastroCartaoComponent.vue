@@ -21,7 +21,7 @@
             required
           />
         </div>
-        <v-btn @click="cadastrarCartao">Cadastrar</v-btn>
+        <v-btn @click="cadastrarCartao" style=" margin-right: 10px">Cadastrar</v-btn>
         <v-btn @click="cancelar">Cancelar</v-btn>
       </div>
     </v-card>
@@ -76,6 +76,21 @@ const cartoes = ref([]);
 
 
 const cadastrarCartao = () => {
+  if(deCartao.value === "") {
+    alert("Preencha o campo Cartão")
+    return
+  }
+
+  if(diaVirada.value === "") {
+    alert("Preencha o campo Dia virada do Cartão")
+    return
+  }
+  
+  if(diaVencimento.value === "") {
+    alert("Preencha o campo Vencimento do Cartão")
+    return
+  }  
+
   axios.post('http://localhost:8081/api/cartao', {
     deCartao: deCartao.value,
     diaVirada: diaVirada.value,
@@ -111,7 +126,7 @@ const fetchCartoes = () => {
 };
 
 const excluirCartao = (cdCartao) => {
-  axios.delete(`http://localhost:8081/api/usuario/${cdUsuario}`)
+  axios.delete(`http://localhost:8081/api/cartao/${cdCartao}`)
     .then(() => {
       console.log('Cartão excluído com sucesso!');
       fetchCartoes();

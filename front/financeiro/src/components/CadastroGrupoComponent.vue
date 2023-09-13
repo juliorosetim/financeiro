@@ -8,7 +8,7 @@
             <v-label for="nome">Grupo:</v-label>
             <input type="text" id="deGrupo" v-model="deGrupo" required />
           </div>
-          <v-btn @click="cadastrarGrupo">Cadastrar</v-btn>
+          <v-btn @click="cadastrarGrupo" style=" margin-right: 10px">Cadastrar</v-btn>
           <v-btn @click="cancelar">Cancelar</v-btn>
         </div>
       </v-card>
@@ -55,6 +55,11 @@
   
   
   const cadastrarGrupo = () => {
+    if (deGrupo.value === "") {
+      alert("Preencha o campo grupo")
+      return;
+    }
+
     axios.post('http://localhost:8081/api/grupo', {
       deGrupo: deGrupo.value,
     })
