@@ -25,7 +25,17 @@ const routes = [
         path: '/cadastroFormaPgto',
         name: 'cadastroFormaPgto',
         component: () => import(/* webpackChunkName: "cadastroFormaPgto" */ '@/views/CadastroFormaPgto.vue'),
-      },          
+      },  
+      {
+        path: '/cadastroGrupo',
+        name: 'cadastroGrupo',
+        component: () => import(/* webpackChunkName: "cadastroGrupo" */ '@/views/CadastroGrupo.vue'),
+      },  
+      {
+        path: '/cadastroGastos',
+        name: 'cadastroGastos',
+        component: () => import(/* webpackChunkName: "cadastroGrupo" */ '@/views/CadastroGastos.vue'),
+      },                   
     ],
   },
 ]

@@ -30,7 +30,6 @@
       </div>
     </v-card>
 
-    <!-- Seção da grid de usuários -->
     <v-card>
       <div class="grid-usuarios">
         <h2>Lista de Usuários</h2>
@@ -38,11 +37,12 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left">Código</th>
-                <th class="text-left">Nome</th>
-                <th class="text-left">Senha</th>
-                <th class="text-left">Ativo</th>
-                <th class="text-left">Ações</th>
+                <th class="text-left" style="width: 100px;">Código</th>
+                <th class="text-left" style="width: 700px;">Nome</th>
+                <th class="text-left" style="width: 100px;">Senha</th>
+                <th class="text-left" style="width: 100px;">Ativo</th>
+                <th class="text-left"></th>
+                <th class="text-left"></th>
               </tr>
             </thead>
             <tbody>
@@ -51,8 +51,9 @@
                 <td>{{ usuario.deUsuario }}</td>
                 <td>{{ usuario.senha }}</td>
                 <td>{{ usuario.flAtivo }}</td>
+                <td><v-btn @click="exibirUsuario(usuario)">Exibir</v-btn></td>
                 <td>
-                  <v-btn @click="exibirUsuario(usuario)">Exibir</v-btn>
+                  
                   <v-btn @click="excluirUsuario(usuario.cdUsuario)">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
@@ -85,9 +86,6 @@ const cancelar = () => {
 }
 
 const cadastrarUsuario = () => {
-  // Validar e enviar o cadastro do usuário (código que você já possui)
-
-  // Após o cadastro, atualize a lista de usuários
   axios.post('http://localhost:8081/api/usuario', {
     deUsuario: nome.value,
     senha: senha.value,
@@ -95,13 +93,11 @@ const cadastrarUsuario = () => {
   })
     .then((response) => {
       console.log('Usuário cadastrado com sucesso!', response.data);
-      // Limpar os campos do formulário ou redirecionar para outra página, se necessário
       nome.value = '';
       senha.value = '';
       confirmacaoSenha.value = '';
       ativo.value = false;
 
-      // Atualizar a lista de usuários após o cadastro
       fetchUsuarios();
     })
     .catch((error) => {
@@ -110,7 +106,6 @@ const cadastrarUsuario = () => {
 };
 
 const exibirUsuario = (usuario) => {
-  // Preencher os campos do formulário com os detalhes do usuário clicado
   nome.value = usuario.deUsuario;
   senha.value = usuario.senha;
   confirmacaoSenha.value = usuario.senha;
@@ -118,7 +113,6 @@ const exibirUsuario = (usuario) => {
 };
 
 const fetchUsuarios = () => {
-  // Buscar a lista de usuários
   axios.get('http://localhost:8081/api/usuario')
     .then((response) => {
       usuarios.value = response.data;
@@ -129,11 +123,9 @@ const fetchUsuarios = () => {
 };
 
 const excluirUsuario = (cdUsuario) => {
-  // Enviar uma solicitação DELETE para o endpoint de exclusão com o cdUsuario
   axios.delete(`http://localhost:8081/api/usuario/${cdUsuario}`)
     .then(() => {
       console.log('Usuário excluído com sucesso!');
-      // Após a exclusão, atualizar a lista de usuários
       fetchUsuarios();
     })
     .catch((error) => {
@@ -141,7 +133,6 @@ const excluirUsuario = (cdUsuario) => {
     });
 };
 
-// Carregar a lista de usuários quando o componente é montado
 onMounted(() => {
   fetchUsuarios();
 });
@@ -191,7 +182,6 @@ onMounted(() => {
     background-color: #0056b3;
   }
 
-/* Estilos para a seção da grid de usuários */
 .grid-usuarios {
   margin-top: 20px;
   border: 1px solid #ccc;
@@ -201,7 +191,6 @@ onMounted(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para a tabela */
 th,
 td {
   text-align: left;
@@ -213,12 +202,10 @@ thead {
   color: #fff;
 }
 
-/* Estilos para as linhas alternadas da tabela */
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-/* Estilos para o botão de visualização */
 .v-btn {
   background-color: #007bff;
   color: #fff;
