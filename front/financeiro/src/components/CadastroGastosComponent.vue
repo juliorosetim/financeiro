@@ -1,217 +1,228 @@
 <template>
-    <v-container>
-      <!-- Seção do formulário -->
-      <v-card>
-        <div class="form-cadastro-cartoes">
-          <h2>Cadastro de Gastos</h2>
-          <!-- <div class="form-group">
-            <v-label for="nome">Cartão:</v-label>
-            <input type="text" id="nome" v-model="deCartao" required />
-          </div>
-          <div class="form-group">
-            <v-label for="diaVirada">Dia Virada:</v-label>
-            <input type="text" id="diaVirada" v-model="diaVirada" required />
-          </div>
-          <div class="form-group">
-            <v-label for="diaVencimento">Vencimento</v-label>
-            <input
-              type="text"
-              id="diaVencimento"
-              v-model="diaVencimento"
-              required
-            />
-          </div>
-          <v-btn @click="cadastrarCartao" style=" margin-right: 10px">Cadastrar</v-btn>
-          <v-btn @click="cancelar">Cancelar</v-btn> -->
+  <v-container>
+    <card>
+      <div class="form-cadastro-gastor">
+        <div>
+          <v-label for="deFatura">Descrição da fatura</v-label>
+          <input type="text" id="deFatura" v-model="deFatura" required />
         </div>
-      </v-card>
+        <div>
+          <v-label for="deDescricao">Descrição personalizada</v-label>
+          <input type="text" id="deDescricao" v-model="deDescricao" required />
+        </div>    
+        
+        <div class="form-group">
+          <v-label for="Grupo">Grupo</v-label>
+                <v-select
+                  v-model="selectedGrupo"
+                  :items="grupos"
+                  item.value="cdGrupo"
+                  item-text="deGrupo"
+                  item-title="deGrupo"
+                />      
+        </div>
+
+        <div class="form-group">
+          <v-label for="FormaPgto">Forma Pagamento</v-label>
+                <v-select
+                  outlined
+                  dense
+                  v-model="selectedFormaPagto"
+                  :items="formasPagto"
+                  item.value="cdFormaPagto"
+                  item-text="deFormaPagto"
+                  item-title="deFormaPagto"
+                />      
+        </div>      
+
+        <div class="form-group">
+          <v-label for="Cartao">Cartão</v-label>
+                <v-select
+                  outlined
+                  dense
+                  v-model="selectedCartao"
+                  :items="cartoes"
+                  item.value="cdCartao"
+                  item-text="deCartao"
+                  item-title="deCartao"
+                />
+        </div>    
+
+        <div>
+          <v-label for="qtdeParcela">Qtde de parcelas</v-label>
+          <input type="number" id="qtdeParcela" v-model="qtdeParcela" required />
+        </div>      
+
+        <div>
+          <v-label for="vlrTotal">Valor total</v-label>
+          <input type="number" id="vlrTotal" v-model="vlrTotal" required />
+        </div>    
+
+        <div>
+          <v-label for="dtPrimeiroParcela">Data Venc. primeira parcela</v-label>
+          <input type="date" id="dtPrimeiroParcela" v-model="dtPrimeiroParcela" required />
+        </div>    
+
+        <v-btn @click="cadastrarGasto" style=" margin-right: 10px">Cadastrar</v-btn>
+        <v-btn @click="cancelar">Cancelar</v-btn>          
+      </div>
+    </card>
+  </v-container>
+</template>
+
+<script setup lang="ts">
+  import axios from 'axios';
+  import { ref, onMounted} from 'vue';
+  import { Cartao } from '@/type/CartaoType'
+  import { Grupo } from '@/type/GrupoType';
+  import { FormaPagto } from '@/type/FormaPagtoType';
+
+  const cartoes = ref<Cartao[]>([]);
+  const grupos = ref<Grupo[]>([]);
+  const formasPagto = ref<FormaPagto[]>([]);
+
+  const selectedCartao = ref<Cartao | null>(null);
+  const selectedGrupo = ref<Grupo | null>(null);
+  const selectedFormaPagto = ref<FormaPagto | null>(null);
+
+  const deFatura = ref('')
+  const deDescricao = ref('')
+  const qtdeParcela = ref('')
+  const vlrTotal = ref('')
+  const dtPrimeiroParcela = ref('')
   
-      <!-- Seção da grid de usuários -->
-      <v-card>
-        <!-- <div class="grid-cartoes">
-          <h2>Lista de Cartões</h2>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left" style="width: 100px;" >Código</th>
-                  <th class="text-left" style="width: 700px;">Nome</th>
-                  <th class="text-left" style="width: 100px;">Dia virada</th>
-                  <th class="text-left" style="width: 100px;">Vencimento</th>
-                  <th class="text-left"></th>
-                  <th class="text-left"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="cartao in cartoes" :key="cartao.cdCartao">
-                  <td>{{ cartao.cdCartao }}</td>
-                  <td>{{ cartao.deCartao }}</td>
-                  <td>{{ cartao.diaVirada }}</td>
-                  <td>{{ cartao.diaVencimento }}</td>
-                  <td><v-btn @click="exibirCartao(cartao)">Exibir</v-btn></td>
-                  <td>
-                    <v-btn @click="excluirCartao(cartao.cdCartao)">
-                      <v-icon>mdi-delete</v-icon>
-                    </v-btn>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </div> -->
-      </v-card>
-    </v-container>
-    </template>
+
+  const fetchCartoes = async() => {
+    axios.get('http://localhost:8081/api/cartao')
+      .then((response) => {
+        cartoes.value = response.data;        
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar a lista de cartões:', error);
+      });
+    }  
     
-  <script setup lang="ts">
-  
-//   import axios from 'axios';
-//   import { ref, onMounted } from 'vue';
-  
-//   const deCartao = ref('');
-//   const diaVirada = ref('');
-//   const diaVencimento = ref('');
-  
-//   const cartoes = ref([]);
-  
-  
-//   const cadastrarCartao = () => {
-//     axios.post('http://localhost:8081/api/cartao', {
-//       deCartao: deCartao.value,
-//       diaVirada: diaVirada.value,
-//       diaVencimento: diaVencimento.value,
-//     })
-//       .then((response) => {
-//         console.log('Cartão cadastrado com sucesso!', response.data);
-//         deCartao.value = '';
-//         diaVirada.value = '';
-//         diaVencimento.value = '';
-  
-//         fetchCartoes();
-//       })
-//       .catch((error) => {
-//         console.error('Erro ao cadastrar cartão:', error);
-//       });   
-//   };
-  
-//   const cancelar = () => {
-//     deCartao.value = '';
-//     diaVirada.value = '';
-//     diaVencimento.value = '';
-//   }
-  
-//   const fetchCartoes = () => {
-//     axios.get('http://localhost:8081/api/cartao')
-//       .then((response) => {
-//         cartoes.value = response.data;
-//       })
-//       .catch((error) => {
-//         console.error('Erro ao buscar a lista de cart~es:', error);
-//       });
-//   };
-  
-//   const excluirCartao = (cdCartao) => {
-//     axios.delete(`http://localhost:8081/api/usuario/${cdUsuario}`)
-//       .then(() => {
-//         console.log('Cartão excluído com sucesso!');
-//         fetchCartoes();
-//       })
-//       .catch((error) => {
-//         console.error('Erro ao excluir cartão:', error);
-//       });
-//   };
-  
-//   const exibirCartao = (cartao) => {
-//     deCartao.value = cartao.deCartao;
-//     diaVirada.value = cartao.diaVirada;
-//     diaVencimento.value = cartao.diaVencimento;
-//   };
-  
-//   onMounted(() => {
-//     fetchCartoes();
-//   });
-  
-  </script>
-  
-  <style scoped>
-    .form-cadastro-cartoes {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f9f9f9; 
-    }
+    const fetchGrupos = async() => {
+      axios.get('http://localhost:8081/api/grupo')
+      .then((response) => {
+        grupos.value = response.data;        
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar a lista de grupos:', error);
+      });
+    }  
+
+    const fetchFormasPagto = async() => {
+    axios.get('http://localhost:8081/api/formapagto')
+      .then((response) => {
+        formasPagto.value = response.data;        
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar a lista de Formas de pagamentos:', error);
+      });
+    }      
+
+  const cadastrarGasto = () => {
+    console.log('Cadastrar gasto selectedCartao ', selectedCartao.value)
+    console.log('Cadastrar gasto selectedGrupo ', selectedGrupo.value)
+  }
     
-    .form-group {
-      margin-bottom: 10px;
-    }
-    
-    label {
-      display: block;
-      font-weight: bold;
-      color: #000;
-    }
-    
-    input[type="text"],
-    input[type="password"],
-    input[type="checkbox"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 3px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-    
-    button[type="submit"] {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 3px;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    
-    button[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-  
-  .grid-cartoes {
-    margin-top: 20px;
+  const cancelar = () => {
+    return null
+  }
+
+  onMounted(() => {
+    fetchCartoes();
+    fetchGrupos();
+    fetchFormasPagto();
+  });
+</script>
+
+<style scoped>
+  .form-cadastro-gastor {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
   }
   
-  th,
-  td {
-    text-align: left;
-    padding: 10px;
+  .form-group {
+    margin-bottom: 10px;
   }
   
-  thead {
+  label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  input[type="checkbox"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  button[type="submit"] {
     background-color: #007bff;
     color: #fff;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .v-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 5px 10px;
     border: none;
     border-radius: 3px;
+    padding: 10px 20px;
     cursor: pointer;
+    font-weight: bold;
   }
   
-  .v-btn:hover {
+  button[type="submit"]:hover {
     background-color: #0056b3;
   }
-    </style>  
+
+.grid-usuarios {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px;
+}
+
+thead {
+  background-color: #007bff;
+  color: #fff;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.v-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.v-btn:hover {
+  background-color: #0056b3;
+}
+
+.password {
+  border: none;
+  cursor: not-allowed;
+}
+  </style>  

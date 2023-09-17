@@ -55,7 +55,7 @@
                 <td>{{ usuario.flAtivo }}</td>
                 <td><v-btn @click="exibirUsuario(usuario)">Exibir</v-btn></td>
                 <td>
-                  <v-btn @click="excluirUsuario(usuario.cdUsuario)">
+                  <v-btn @click="usuario.cdUsuario !== undefined ? excluirUsuario(usuario.cdUsuario) : null">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -71,13 +71,14 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import Usuario from '@/type/usuarioType';
 
-const nome = ref('');
+const nome = ref(<string>'');
 const senha = ref('');
 const confirmacaoSenha = ref('');
 const ativo = ref(false);
 
-const usuarios = ref([]);
+const usuarios = ref<Usuario[]>([]);
 
 const cancelar = () => {
   nome.value = '';
@@ -106,10 +107,10 @@ const cadastrarUsuario = () => {
     });    
 };
 
-const exibirUsuario = (usuario) => {
-  nome.value = usuario.deUsuario;
-  senha.value = usuario.senha;
-  confirmacaoSenha.value = usuario.senha;
+const exibirUsuario = (usuario: Usuario) => {
+  nome.value = usuario.deUsuario != undefined ? usuario.deUsuario : '' ;
+  senha.value = usuario.senha != undefined ? usuario.senha : '';
+  confirmacaoSenha.value = usuario.senha != undefined ? usuario.senha : '';
   ativo.value = usuario.flAtivo === 'S';
 };
 
@@ -123,7 +124,7 @@ const fetchUsuarios = () => {
     });
 };
 
-const excluirUsuario = (cdUsuario) => {
+const excluirUsuario = (cdUsuario : number) => {
   axios.delete(`http://localhost:8081/api/usuario/${cdUsuario}`)
     .then(() => {
       console.log('Usuário excluído com sucesso!');

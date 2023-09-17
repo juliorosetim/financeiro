@@ -32,4 +32,12 @@ public class GrupoService {
             throw new Exception(e);
         }
     }
+
+    public void deleteById(Long cdGrupo)throws Exception{
+        try{
+            grupoRepository.deleteById(cdGrupo);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 }

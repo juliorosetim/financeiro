@@ -3,6 +3,7 @@ package com.rosetim.financeiro.entity.gastos;
 import com.rosetim.financeiro.entity.cartao.CartaoEntity;
 import com.rosetim.financeiro.entity.formaPagto.FormaPagtoEntity;
 import com.rosetim.financeiro.entity.grupo.GrupoEntity;
+import com.rosetim.financeiro.entity.parcelas.ParcelasEntity;
 import com.rosetim.financeiro.entity.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "gastos")
@@ -50,21 +52,17 @@ public class GastosEntity {
     @Column(name = "qtdeparcela")
     Integer qtdeParcela;
 
-    @Column(name = "vlrparcela")
-    BigDecimal vlrParcela;
-
     @Column(name = "vlrtotal")
     BigDecimal vlrTotal;
-
-    @Column(name = "dtvencimento")
-    LocalDate dtVencimento;
-
-    String conferido;
 
     @OneToOne()
     @JoinColumn(name = "cdusuario")
     UsuarioEntity usuario;
 
-    @Column(name = "nuparcela")
-    Integer nuParcela;
+    @Column(name = "dtprimeiraparcela")
+    LocalDate dtPrimeiraParcela;
+
+    @OneToMany
+    @JoinColumn(name = "cdgasto", referencedColumnName = "cdgasto", insertable = false, updatable = false)
+    List<ParcelasEntity> parcelas;
 }

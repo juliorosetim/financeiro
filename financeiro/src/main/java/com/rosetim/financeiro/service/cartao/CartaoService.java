@@ -41,4 +41,12 @@ public class CartaoService {
             throw new Exception(e);
         }
     }
+
+    public void deleteById(Long cdCartao)throws Exception{
+        try{
+            cartaoRepository.deleteById(cdCartao);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 }

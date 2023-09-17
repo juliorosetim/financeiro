@@ -34,7 +34,7 @@
                 <v-btn @click="exibirFormaPagto(formaPagto)">Exibir</v-btn>
                 </td>
                 <td> 
-                  <v-btn @click="excluirFormaPagto(formaPagto.cdFormaPagto)">
+                  <v-btn @click="formaPagto.cdFormaPagto !== undefined ? excluirFormaPagto(formaPagto.cdFormaPagto): null">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -50,11 +50,11 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { FormaPagto } from '@/type/FormaPagtoType';
 
 const deFormaPagto = ref('');
 
-const formasPagto = ref([]);
-
+const formasPagto = ref<FormaPagto[]>([]);
 
 const cadastrarFormaPagto = () => {
   if (deFormaPagto.value === "") {
@@ -90,7 +90,7 @@ const fetchFormaPagto = () => {
     });
 };
 
-const excluirFormaPagto = (cdFormaPagto) => {
+const excluirFormaPagto = (cdFormaPagto: number) => {
   axios.delete(`http://localhost:8081/api/formapagto/${cdFormaPagto}`)
     .then(() => {
       console.log('Forma de pagamento excluída com sucesso!');
@@ -101,7 +101,7 @@ const excluirFormaPagto = (cdFormaPagto) => {
     });
 };
 
-const exibirFormaPagto = (formaPagto) => {
+const exibirFormaPagto = (formaPagto : FormaPagto) => {
   deFormaPagto.value = formaPagto.deFormaPagto;
 };
 

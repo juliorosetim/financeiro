@@ -31,4 +31,11 @@ public class GrupoController {
 
         return ResponseEntity.status(HttpStatus.OK).body(all);
     }
+
+    @DeleteMapping("/{cdGrupo}")
+    public ResponseEntity<?> deleteById(@PathVariable Long cdGrupo) throws Exception {
+        grupoService.deleteById(cdGrupo);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Grupo apagado com sucesso");
+    }
 }

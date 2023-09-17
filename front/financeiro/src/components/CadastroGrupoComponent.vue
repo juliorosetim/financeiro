@@ -32,7 +32,7 @@
                   <td>{{ grupo.deGrupo }}</td>
                   <td><v-btn @click="exibirGrupo(grupo)">Exibir</v-btn></td>
                   <td>
-                    <v-btn @click="excluirGrupo(grupo.cdGrupo)">
+                    <v-btn @click="grupo.cdGrupo !== undefined ? excluirGrupo(grupo.cdGrupo) : null">
                       <v-icon>mdi-delete</v-icon>
                     </v-btn>
                   </td>
@@ -48,11 +48,11 @@
   <script setup lang="ts">
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
+  import {Grupo} from '@/type/GrupoType'
   
   const deGrupo = ref('');
   
-  const grupos = ref([]);
-  
+  const grupos = ref<Grupo[]>([]);
   
   const cadastrarGrupo = () => {
     if (deGrupo.value === "") {
@@ -88,7 +88,7 @@
       });
   };
   
-  const excluirGrupo = (cdGrupo) => {
+  const excluirGrupo = (cdGrupo: number) => {
     axios.delete(`http://localhost:8081/api/grupo/${cdGrupo}`)
       .then(() => {
         console.log('Grupo excluído com sucesso!');
@@ -99,7 +99,7 @@
       });
   };
   
-  const exibirGrupo = (grupo) => {
+  const exibirGrupo = (grupo : Grupo) => {
     deGrupo.value = grupo.deGrupo;
   };
   

@@ -32,4 +32,12 @@ public class FormaPagtoService {
             throw new Exception(e);
         }
     }
+
+    public void deleteById(Long cdFormaPagto)throws Exception{
+        try{
+            formaPagtoRepository.deleteById(cdFormaPagto);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 }

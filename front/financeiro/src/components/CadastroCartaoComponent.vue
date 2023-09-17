@@ -50,7 +50,7 @@
                 <td>{{ cartao.diaVencimento }}</td>
                 <td><v-btn @click="exibirCartao(cartao)">Exibir</v-btn></td>
                 <td>
-                  <v-btn @click="excluirCartao(cartao.cdCartao)">
+                  <v-btn @click="cartao.cdCartao !== undefined ? excluirCartao(cartao.cdCartao) : null">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -67,12 +67,13 @@
 
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { Cartao } from '@/type/CartaoType';
 
 const deCartao = ref('');
 const diaVirada = ref('');
 const diaVencimento = ref('');
 
-const cartoes = ref([]);
+const cartoes = ref<Cartao[]>([]);
 
 
 const cadastrarCartao = () => {
@@ -125,7 +126,7 @@ const fetchCartoes = () => {
     });
 };
 
-const excluirCartao = (cdCartao) => {
+const excluirCartao = (cdCartao : number) => {
   axios.delete(`http://localhost:8081/api/cartao/${cdCartao}`)
     .then(() => {
       console.log('Cartão excluído com sucesso!');
@@ -136,7 +137,7 @@ const excluirCartao = (cdCartao) => {
     });
 };
 
-const exibirCartao = (cartao) => {
+const exibirCartao = (cartao : Cartao) => {
   deCartao.value = cartao.deCartao;
   diaVirada.value = cartao.diaVirada;
   diaVencimento.value = cartao.diaVencimento;

@@ -29,4 +29,11 @@ public class FormaPagtoController {
 
         return ResponseEntity.status(HttpStatus.OK).body(all);
     }
+
+    @DeleteMapping("/{cdFormaPagto}")
+    public ResponseEntity<?> deleteById(@PathVariable Long cdFormaPagto) throws Exception {
+        formaPagtoService.deleteById(cdFormaPagto);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Forma de pagamento apagado com sucesso");
+    }
 }

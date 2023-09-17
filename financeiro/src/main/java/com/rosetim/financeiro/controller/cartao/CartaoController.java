@@ -26,9 +26,16 @@ public class CartaoController {
     }
 
     @GetMapping
-    public ResponseEntity findAll() throws Exception {
+    public ResponseEntity<?> findAll() throws Exception {
         List<CartaoEntity> all = cartaoService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(all);
+    }
+
+    @DeleteMapping("/{cdCartao}")
+    public ResponseEntity<?> deleteById(@PathVariable Long cdCartao) throws Exception {
+        cartaoService.deleteById(cdCartao);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Cartão apagado com sucesso");
     }
 }
