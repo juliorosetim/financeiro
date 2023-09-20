@@ -2,33 +2,53 @@
   <v-container>
     <!-- Seção do formulário -->
     <v-card>
-      <div class="form-cadastro-usuario">
+      <div class="form-cadastro">
         <h2>Cadastro de Usuário</h2>
-        <div class="form-group">
-          <v-label for="nome">Nome:</v-label>
-          <input type="text" id="nome" v-model="nome" required />
-        </div>
-        <div class="form-group">
-          <v-label for="senha">Senha:</v-label>
-          <input type="password" id="senha" v-model="senha" required />
-        </div>
-        <div class="form-group">
-          <v-label for="confirmacao-senha">Confirmação de Senha:</v-label>
+        <div class="input-container">
           <input
+            class="input"
+            type="text"
+            id="nome"
+            v-model="nome"
+            required
+            placeholder="Nome"
+          />
+        </div>
+        <div class="input-container">
+          <input
+            class="input"
+            type="password"
+            id="senha"
+            v-model="senha"
+            required
+            placeholder="Senha"
+          />
+        </div>
+        <div class="input-container">
+          <input
+            class="input"
             type="password"
             id="confirmacao-senha"
             v-model="confirmacaoSenha"
             required
+            placeholder="Confirme a senha"
           />
         </div>
-        <div class="form-group">
-          <v-label for="ativo">Ativo:</v-label>
-          <input type="checkbox" id="ativo" v-model="ativo" />
+        <div class="input-container">
+          <!-- <input class="input" type="checkbox" id="ativo" v-model="ativo" /> -->
+          <div class="checkbox-apple">
+            <input class="yep" id="check-apple" type="checkbox" />
+            <label for="check-apple"></label>
+          </div>
         </div>
-        <v-btn @click="cadastrarUsuario" style="margin-right: 10px"
-          >Cadastrar</v-btn
+        <button
+          class="button-custom"
+          @click="cadastrarUsuario"
+          style="margin-right: 10px"
         >
-        <v-btn @click="cancelar">Cancelar</v-btn>
+          Cadastrar
+        </button>
+        <button class="button-custom" @click="cancelar">Cancelar</button>
       </div>
     </v-card>
 
@@ -52,12 +72,16 @@
               <tr v-for="usuario in usuarios" :key="usuario.cdUsuario">
                 <td>{{ usuario.cdUsuario }}</td>
                 <td>{{ usuario.deUsuario }}</td>
-                <!-- <td>{{ usuario.senha }}</td> -->
                 <td></td>
                 <td>{{ usuario.flAtivo }}</td>
-                <td><v-btn @click="exibirUsuario(usuario)">Exibir</v-btn></td>
+                <td>
+                  <v-btn class="button-grid" @click="exibirUsuario(usuario)"
+                    ><v-icon>mdi-eye</v-icon></v-btn
+                  >
+                </td>
                 <td>
                   <v-btn
+                    class="button-grid"
                     @click="
                       usuario.cdUsuario !== undefined
                         ? excluirUsuario(usuario.cdUsuario)
@@ -77,6 +101,7 @@
 </template>
 
 <script setup lang="ts">
+import "@/assets/css/form-styles.css";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import Usuario from "@/type/usuarioType";
@@ -151,89 +176,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.form-cadastro-usuario {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
 
-.form-group {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="checkbox"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 3px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.grid-usuarios {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  text-align: left;
-  padding: 10px;
-}
-
-thead {
-  background-color: #007bff;
-  color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.v-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.v-btn:hover {
-  background-color: #0056b3;
-}
-
-.password {
-  border: none;
-  cursor: not-allowed;
-}
-</style>

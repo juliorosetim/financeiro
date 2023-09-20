@@ -2,16 +2,26 @@
   <v-container>
     <!-- Seção do formulário -->
     <v-card>
-      <div class="form-cadastro-grupo">
+      <div class="form-cadastro">
         <h2>Cadastrode grupos</h2>
-        <div class="form-group">
-          <v-label for="nome">Grupo:</v-label>
-          <input type="text" id="deGrupo" v-model="deGrupo" required />
-        </div>
-        <v-btn @click="cadastrarGrupo" style="margin-right: 10px"
-          >Cadastrar</v-btn
+        <p class="input-container">
+          <input
+            type="text"
+            id="deGrupo"
+            v-model="deGrupo"
+            required
+            class="input"
+            placeholder="Grupo"
+          />
+        </p>
+        <button
+          class="button-custom"
+          @click="cadastrarGrupo"
+          style="margin-right: 10px"
         >
-        <v-btn @click="cancelar">Cancelar</v-btn>
+          Cadastrar
+        </button>
+        <button class="button-custom" @click="cancelar">Cancelar</button>
       </div>
     </v-card>
 
@@ -32,9 +42,14 @@
               <tr v-for="grupo in grupos" :key="grupo.cdGrupo">
                 <td>{{ grupo.cdGrupo }}</td>
                 <td>{{ grupo.deGrupo }}</td>
-                <td><v-btn @click="exibirGrupo(grupo)">Exibir</v-btn></td>
+                <td>
+                  <v-btn class="button-grid" @click="exibirGrupo(grupo)"
+                    ><v-icon>mdi-eye</v-icon></v-btn
+                  >
+                </td>
                 <td>
                   <v-btn
+                    class="button-grid"
                     @click="
                       grupo.cdGrupo !== undefined
                         ? excluirGrupo(grupo.cdGrupo)
@@ -57,6 +72,7 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { Grupo } from "@/type/GrupoType";
+import "@/assets/css/form-styles.css";
 
 const deGrupo = ref("");
 
@@ -118,85 +134,3 @@ onMounted(() => {
   fetchGrupos();
 });
 </script>
-
-  <style scoped>
-.form-cadastro-grupo {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="checkbox"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 3px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.grid-grupos {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  text-align: left;
-  padding: 10px;
-}
-
-thead {
-  background-color: #007bff;
-  color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.v-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.v-btn:hover {
-  background-color: #0056b3;
-}
-</style>

@@ -38,6 +38,10 @@ public class GastosService {
         try {
             CartaoEntity cartaoEntity = cartaoService.findbyCdCartao(gastosEntity.getCartao().getCdCartao());
 
+            if ( Objects.isNull(gastosEntity.getQtdeParcela())){
+                gastosEntity.setQtdeParcela(1);
+            }
+
             GastosEntity gastoSave = gastosRepository.save(gastosEntity);
 
             ArrayList parcelasInserir = new ArrayList();

@@ -1,29 +1,45 @@
 <template>
   <v-container>
     <card>
-      <div class="form-cadastro-gastor">
-        <div>
-          <v-label for="deFatura">Descrição da fatura</v-label>
-          <input type="text" id="deFatura" v-model="deFatura" required />
+      <div class="form-cadastro">
+        <div class="input-container">
+          <input
+            class="input"
+            type="text"
+            id="deFatura"
+            v-model="deFatura"
+            required
+            placeholder="Descrição da fatura"
+          />
         </div>
-        <div>
-          <v-label for="deDescricao">Descrição personalizada</v-label>
-          <input type="text" id="deDescricao" v-model="deDescricao" required />
+        <div class="input-container">
+          <v-label for="deDescricao"></v-label>
+          <input
+            class="input"
+            type="text"
+            id="deDescricao"
+            v-model="deDescricao"
+            required
+            placeholder="Descrição personalizada"
+          />
         </div>
 
-        <div class="form-group">
-          <v-label for="Grupo">Grupo</v-label>
+        <div class="input-container">
           <v-select
+            outlined
+            dense
             v-model="selectedGrupo"
             :items="grupos"
             item-value="cdGrupo"
             item-text="deGrupo"
             item-title="deGrupo"
+            label="Grupo"
+            density="comfortable"
+            class="select"
           />
         </div>
 
-        <div class="form-group">
-          <v-label for="FormaPgto">Forma Pagamento</v-label>
+        <div class="input-container">
           <v-select
             outlined
             dense
@@ -32,11 +48,13 @@
             item-value="cdFormaPagto"
             item-text="deFormaPagto"
             item-title="deFormaPagto"
+            label="Forma Pagamento"
+            density="comfortable"
+            class="select"
           />
         </div>
 
-        <div class="form-group">
-          <v-label for="Cartao">Cartão</v-label>
+        <div class="input-container">
           <v-select
             outlined
             dense
@@ -45,38 +63,54 @@
             item-value="cdCartao"
             item-text="deCartao"
             item-title="deCartao"
+            label="Cartão"
+            density="comfortable"
+            class="select"
           />
         </div>
 
-        <div>
-          <v-label for="qtdeParcela">Qtde de parcelas</v-label>
+        <div class="input-container">
           <input
+            class="input"
             type="number"
             id="qtdeParcela"
             v-model="qtdeParcela"
+            placeholder="Qtde de parcelas"
             required
           />
         </div>
 
-        <div>
-          <v-label for="vlrTotal">Valor total</v-label>
-          <input type="number" id="vlrTotal" v-model="vlrTotal" required />
+        <div class="input-container">
+          <input
+            class="input"
+            type="number"
+            id="vlrTotal"
+            v-model="vlrTotal"
+            required
+            placeholder="Valor total"
+          />
         </div>
 
-        <div>
-          <v-label for="dtPrimeiraParcela">Data Venc. primeira parcela</v-label>
+        <div class="input-container">
+          <v-label for="dtPrimeiraParcela"></v-label>
           <input
+            class="input"
             type="date"
             id="dtPrimeiraParcela"
             v-model="dtPrimeiraParcela"
             required
+            placeholder="Data Venc. primeira parcela"
           />
         </div>
 
-        <v-btn @click="cadastrarGasto" style="margin-right: 10px"
-          >Cadastrar</v-btn
+        <button
+          class="button-custom"
+          @click="cadastrarGasto"
+          style="margin-right: 10px"
         >
-        <v-btn @click="cancelar">Cancelar</v-btn>
+          Cadastrar
+        </button>
+        <button class="button-custom" @click="cancelar">Cancelar</button>
       </div>
     </card>
   </v-container>
@@ -88,6 +122,7 @@ import { ref, onMounted } from "vue";
 import { Cartao } from "@/type/CartaoType";
 import { Grupo } from "@/type/GrupoType";
 import { FormaPagto } from "@/type/FormaPagtoType";
+import "@/assets/css/form-styles.css";
 
 const cartoes = ref<Cartao[]>([]);
 const grupos = ref<Grupo[]>([]);
@@ -182,94 +217,7 @@ onMounted(() => {
   fetchCartoes();
   fetchGrupos();
   fetchFormasPagto();
+
+  qtdeParcela.value = "1";
 });
 </script>
-
-<style scoped>
-.form-cadastro-gastor {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="number"],
-input[type="date"],
-input[type="checkbox"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 3px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.grid-usuarios {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  text-align: left;
-  padding: 10px;
-}
-
-thead {
-  background-color: #007bff;
-  color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.v-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.v-btn:hover {
-  background-color: #0056b3;
-}
-
-.password {
-  border: none;
-  cursor: not-allowed;
-}
-</style>

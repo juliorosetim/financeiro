@@ -24,4 +24,5 @@ public class ParcelasGastosDto {
     LocalDate dtVencimento;
     String conferido;
     Integer nuParcela;
+    String deCartao;
 }

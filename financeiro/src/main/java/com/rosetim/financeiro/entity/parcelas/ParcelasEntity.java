@@ -22,7 +22,7 @@ public class ParcelasEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parcelas_seq")
     @SequenceGenerator(name = "parcelas_seq", sequenceName = "parcelas_seq", allocationSize = 1)
     @Column(name = "cdparcela")
-    Long cdparcela;
+    Long cdParcela;
 
     @Column(name = "cdgasto")
     Long cdGasto;

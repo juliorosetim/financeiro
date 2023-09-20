@@ -2,55 +2,90 @@
   <v-container>
     <!-- Seção do formulário -->
     <v-card>
-      <div class="form-cadastro-gastos">
-        <v-label>Gastos até o dia</v-label>
-        <input type="date" id="dtFiltro" v-model="dtFiltro" required />
+      <div class="form-cadastro">
+        <label>Gastos até o dia</label>
+        <input
+          class="input"
+          type="date"
+          id="dtFiltro"
+          v-model="dtFiltro"
+          required
+        />
 
-        <v-btn @click="fetchGastos">Filtrar</v-btn>
+        <button class="button-custom" @click="fetchGastos">Filtrar</button>
       </div>
     </v-card>
 
-    <v-card>
+    <!-- <v-card>
       <div>
         <v-data-table
           :headers="headers"
           :items="parcelasGastos"
           class="elevation-1"
           density="compact"
-        >
-        </v-data-table>
+        />
+      </div>
+    </v-card> -->
+
+    <v-card>
+      <div class="grid-usuarios">
+        <h2>Lista de gastos</h2>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left" style="width: 40%">Descrição fatura</th>
+                <th class="text-left" style="width: 35%">
+                  Descrição Personalizada
+                </th>
+                <th class="text-left" style="width: 8%">Parcela</th>
+                <th class="text-left" style="width: 25%">Cartão</th>
+                <th class="text-left" style="width: 10%">Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="parcela in parcelasGastos" :key="parcela.cdParcela">
+                <td>{{ parcela.deFatura }}</td>
+                <td>{{ parcela.deDescricao }}</td>
+                <td>{{ parcela.nuParcela }} / {{ parcela.qtdeParcela }}</td>
+                <td>{{ parcela.deCartao }}</td>
+                <td>{{ parcela.vlrParcela }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </div>
     </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import "@/assets/css/form-styles.css";
 import axios from "axios";
 import { ref, onMounted } from "vue";
-import { VDataTable } from "vuetify/labs/VDataTable";
+// import { VDataTable } from "vuetify/labs/VDataTable";
 import { ParcelasGastosDto } from "@/type/ParcelasGastosDto";
 
 const dtFiltro = ref("");
 
-const headers = [
-  {
-    title: "Descrição da fatura",
-    align: "start",
-    sortable: false,
-    key: "deFatura",
-    width: "40%",
-  },
-  {
-    title: "Descrição Personalizada",
-    align: "end",
-    key: "deDescricao",
-    width: "30%",
-    align: "start",
-  },
-  { title: "Parcela", align: "end", key: "nuParcela", width: "10%" },
-  { title: "Parcelas", align: "start", key: "qtdeParcela", width: "10%" },
-  { title: "Valor", align: "start", key: "vlrParcela", width: "10%" },
-];
+// const headers = [
+//   {
+//     title: "Descrição da fatura",
+//     align: "start",
+//     sortable: false,
+//     key: "deFatura",
+//     width: "40%",
+//   },
+//   {
+//     title: "Descrição Personalizada",
+//     align: "start",
+//     key: "deDescricao",
+//     width: "30%",
+//   },
+//   { title: "Parcela", align: "end", key: "nuParcela", width: "10%" },
+//   { title: "Parcelas", align: "start", key: "qtdeParcela", width: "10%" },
+//   { title: "Valor", align: "start", key: "vlrParcela", width: "10%" },
+// ];
 
 const parcelasGastos = ref<ParcelasGastosDto[]>([]);
 

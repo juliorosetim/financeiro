@@ -2,17 +2,57 @@
   <v-container>
     <!-- Seção do formulário -->
     <v-card>
-      <div class="form-cadastro-cartoes">
+      <div class="form-cadastro">
         <h2>Cadastro de Cartões</h2>
-        <div class="form-group">
+
+        <p class="input-container">
+          <input
+            type="text"
+            placeholder="Cartão"
+            name="deCartao"
+            id="deCartao"
+            class="input"
+            autocomplete="deCartao"
+            v-model="deCartao"
+          />
+          <!-- <label class="input-label" for="text">Cartão</label> -->
+        </p>
+
+        <p class="input-container">
+          <input
+            type="text"
+            placeholder="Dia virada"
+            name="diaVirada"
+            id="diaVirada"
+            class="input"
+            autocomplete="diaVirada"
+            v-model="diaVirada"
+          />
+          <!-- <label class="input-label" for="text">Name</label> -->
+        </p>
+
+        <p class="input-container">
+          <input
+            type="text"
+            placeholder="Dia vencimento"
+            name="diaVencimento"
+            id="diaVencimento"
+            class="input"
+            autocomplete="diaVencimento"
+            v-model="diaVencimento"
+          />
+          <!-- <label class="input-label" for="text">Name</label> -->
+        </p>
+
+        <!-- <div class="form-group">
           <v-label for="nome">Cartão:</v-label>
           <input type="text" id="nome" v-model="deCartao" required />
-        </div>
-        <div class="form-group">
+        </div> -->
+        <!-- <div class="form-group">
           <v-label for="diaVirada">Dia Virada:</v-label>
           <input type="text" id="diaVirada" v-model="diaVirada" required />
-        </div>
-        <div class="form-group">
+        </div> -->
+        <!-- <div class="form-group">
           <v-label for="diaVencimento">Vencimento</v-label>
           <input
             type="text"
@@ -20,11 +60,11 @@
             v-model="diaVencimento"
             required
           />
-        </div>
-        <v-btn @click="cadastrarCartao" style="margin-right: 10px"
-          >Cadastrar</v-btn
-        >
-        <v-btn @click="cancelar">Cancelar</v-btn>
+        </div> -->
+        <button class="button-custom" @click="cadastrarCartao">
+          Cadastrar
+        </button>
+        <button class="button-custom" @click="cancelar">Cancelar</button>
       </div>
     </v-card>
 
@@ -50,9 +90,14 @@
                 <td>{{ cartao.deCartao }}</td>
                 <td>{{ cartao.diaVirada }}</td>
                 <td>{{ cartao.diaVencimento }}</td>
-                <td><v-btn @click="exibirCartao(cartao)">Exibir</v-btn></td>
+                <td>
+                  <v-btn class="button-grid" @click="exibirCartao(cartao)"
+                    ><v-icon>mdi-eye</v-icon></v-btn
+                  >
+                </td>
                 <td>
                   <v-btn
+                    class="button-grid"
                     @click="
                       cartao.cdCartao !== undefined
                         ? excluirCartao(cartao.cdCartao)
@@ -75,6 +120,7 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { Cartao } from "@/type/CartaoType";
+import "@/assets/css/form-styles.css";
 
 const deCartao = ref("");
 const diaVirada = ref("");
@@ -157,158 +203,3 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.form-cadastro-cartoes {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  color: #000;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="checkbox"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 3px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.grid-cartoes {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  text-align: left;
-  padding: 10px;
-}
-
-thead {
-  background-color: #007bff;
-  color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.v-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.v-btn:hover {
-  background-color: #0056b3;
-}
-
-.wave-group {
-  position: relative;
-}
-
-.wave-group .input {
-  font-size: 16px;
-  padding: 10px 10px 10px 5px;
-  display: block;
-  width: 200px;
-  border: none;
-  border-bottom: 1px solid #515151;
-  background: transparent;
-}
-
-.wave-group .input:focus {
-  outline: none;
-}
-
-.wave-group .label {
-  color: #999;
-  font-size: 18px;
-  font-weight: normal;
-  position: absolute;
-  pointer-events: none;
-  left: 5px;
-  top: 10px;
-  display: flex;
-}
-
-.wave-group .label-char {
-  transition: 0.2s ease all;
-  transition-delay: calc(var(--index) * 0.05s);
-}
-
-.wave-group .input:focus ~ label .label-char,
-.wave-group .input:valid ~ label .label-char {
-  transform: translateY(-20px);
-  font-size: 14px;
-  color: #5264ae;
-}
-
-.wave-group .bar {
-  position: relative;
-  display: block;
-  width: 200px;
-}
-
-.wave-group .bar:before,
-.wave-group .bar:after {
-  content: "";
-  height: 2px;
-  width: 0;
-  bottom: 1px;
-  position: absolute;
-  background: #5264ae;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
-}
-
-.wave-group .bar:before {
-  left: 50%;
-}
-
-.wave-group .bar:after {
-  right: 50%;
-}
-
-.wave-group .input:focus ~ .bar:before,
-.wave-group .input:focus ~ .bar:after {
-  width: 50%;
-}
-</style>

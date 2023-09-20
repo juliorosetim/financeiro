@@ -2,21 +2,26 @@
   <v-container>
     <!-- Seção do formulário -->
     <v-card>
-      <div class="form-cadastro-forma-pagto">
+      <div class="form-cadastro">
         <h2>Cadastro Forma Pagamento</h2>
-        <div class="form-group">
-          <v-label for="nome">Forma de pagamento:</v-label>
+        <div class="input-container">
           <input
             type="text"
             id="deFormaPagto"
             v-model="deFormaPagto"
             required
+            class="input"
+            placeholder="Forma de pagamento"
           />
         </div>
-        <v-btn @click="cadastrarFormaPagto" style="margin-right: 10px"
-          >Cadastrar</v-btn
+        <button
+          class="button-custom"
+          @click="cadastrarFormaPagto"
+          style="margin-right: 10px"
         >
-        <v-btn @click="cancelar">Cancelar</v-btn>
+          Cadastrar
+        </button>
+        <button class="button-custom" @click="cancelar">Cancelar</button>
       </div>
     </v-card>
 
@@ -41,10 +46,15 @@
                 <td>{{ formaPagto.cdFormaPagto }}</td>
                 <td>{{ formaPagto.deFormaPagto }}</td>
                 <td>
-                  <v-btn @click="exibirFormaPagto(formaPagto)">Exibir</v-btn>
+                  <v-btn
+                    class="button-grid"
+                    @click="exibirFormaPagto(formaPagto)"
+                    ><v-icon>mdi-eye</v-icon></v-btn
+                  >
                 </td>
                 <td>
                   <v-btn
+                    class="button-grid"
                     @click="
                       formaPagto.cdFormaPagto !== undefined
                         ? excluirFormaPagto(formaPagto.cdFormaPagto)
@@ -67,6 +77,7 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { FormaPagto } from "@/type/FormaPagtoType";
+import "@/assets/css/form-styles.css";
 
 const deFormaPagto = ref("");
 
@@ -129,82 +140,3 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.form-cadastro-forma-pagto {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 3px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.grid-forma-pagto {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-th,
-td {
-  text-align: left;
-  padding: 10px;
-}
-
-thead {
-  background-color: #007bff;
-  color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.v-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.v-btn:hover {
-  background-color: #0056b3;
-}
-</style>
