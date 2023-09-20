@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -32,7 +33,7 @@ public class GastosService {
     @Autowired
     CartaoService cartaoService;
 
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     public void save(GastosEntity gastosEntity) throws Exception {
         try {
             CartaoEntity cartaoEntity = cartaoService.findbyCdCartao(gastosEntity.getCartao().getCdCartao());
@@ -42,13 +43,13 @@ public class GastosService {
             ArrayList parcelasInserir = new ArrayList();
             for(int i = 1; i <= gastosEntity.getQtdeParcela(); i++){
                 BigDecimal vlrParcela = gastosEntity.getVlrTotal()
-                        .divide(BigDecimal.valueOf(gastosEntity.getQtdeParcela()));
+                        .divide(BigDecimal.valueOf(gastosEntity.getQtdeParcela()), MathContext.DECIMAL64);
 
                 LocalDate dtVencimento = dataVencimento(gastosEntity.getDtPrimeiraParcela(), cartaoEntity, i);
 
                 parcelasInserir.add(ParcelasEntity
                         .builder()
-                        .cdGasto(gastoSave.getCdgasto())
+                        .cdGasto(gastoSave.getCdGasto())
                         .qtdeParcela(gastosEntity.getQtdeParcela())
                         .vlrParcela(vlrParcela)
                         .vlrTotal(gastoSave.getVlrTotal())
@@ -68,27 +69,15 @@ public class GastosService {
     }
 
     private static LocalDate dataVencimento(LocalDate dataVencimento, CartaoEntity cartaoEntity, Integer parcela) {
-        Integer diaAtual = diaAtual();
-
         Date date = convertDate(dataVencimento);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        if(cartaoEntity.getDiaVirada() > diaAtual ){
-            if(cartaoEntity.getDiaVencimento() > diaAtual) {
-                calendar.add(Calendar.MONTH, parcela);
-            }else{
-                calendar.add(Calendar.MONTH, parcela + 1);
-            }
-        }else{
-            if(cartaoEntity.getDiaVencimento() > diaAtual) {
-                calendar.add(Calendar.MONTH, parcela);
-            }else{
-                calendar.add(Calendar.MONTH, parcela + 1);
-            }
+        if(parcela > 1 ){
+            calendar.add(Calendar.MONTH, parcela -1);
         }
 
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) ,
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 cartaoEntity.getDiaVencimento());
 
         Date novoVencimento = calendar.getTime();
@@ -98,6 +87,36 @@ public class GastosService {
         return localDate;
     }
 
+//    private static LocalDate dataVencimento(LocalDate dataVencimento, CartaoEntity cartaoEntity, Integer parcela) {
+//        Integer diaAtual = diaAtual();
+//
+//        Date date = convertDate(dataVencimento);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//
+//        if(cartaoEntity.getDiaVirada() > diaAtual ){
+//            if(cartaoEntity.getDiaVencimento() > diaAtual) {
+//                calendar.add(Calendar.MONTH, parcela);
+//            }else{
+//                calendar.add(Calendar.MONTH, parcela + 1);
+//            }
+//        }else{
+//            if(cartaoEntity.getDiaVencimento() > diaAtual) {
+//                calendar.add(Calendar.MONTH, parcela);
+//            }else{
+//                calendar.add(Calendar.MONTH, parcela + 1);
+//            }
+//        }
+//
+//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) ,
+//                cartaoEntity.getDiaVencimento());
+//
+//        Date novoVencimento = calendar.getTime();
+//
+//        Instant instant = novoVencimento.toInstant();
+//        LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+//        return localDate;
+//    }
 
     private static Integer diaAtual() {
         Date datAtual = new Date();

@@ -25,7 +25,9 @@
           <v-label for="ativo">Ativo:</v-label>
           <input type="checkbox" id="ativo" v-model="ativo" />
         </div>
-        <v-btn @click="cadastrarUsuario" style=" margin-right: 10px">Cadastrar</v-btn>
+        <v-btn @click="cadastrarUsuario" style="margin-right: 10px"
+          >Cadastrar</v-btn
+        >
         <v-btn @click="cancelar">Cancelar</v-btn>
       </div>
     </v-card>
@@ -37,11 +39,11 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left" style="width: 100px;">Código</th>
-                <th class="text-left" style="width: 700px;">Nome</th>
+                <th class="text-left" style="width: 100px">Código</th>
+                <th class="text-left" style="width: 700px">Nome</th>
                 <!-- <th class="text-left" style="width: 100px;">Senha</th> -->
-                <th class="text-left" style="width: 100px;"></th>
-                <th class="text-left" style="width: 100px;">Ativo</th>
+                <th class="text-left" style="width: 100px"></th>
+                <th class="text-left" style="width: 100px">Ativo</th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
               </tr>
@@ -55,7 +57,13 @@
                 <td>{{ usuario.flAtivo }}</td>
                 <td><v-btn @click="exibirUsuario(usuario)">Exibir</v-btn></td>
                 <td>
-                  <v-btn @click="usuario.cdUsuario !== undefined ? excluirUsuario(usuario.cdUsuario) : null">
+                  <v-btn
+                    @click="
+                      usuario.cdUsuario !== undefined
+                        ? excluirUsuario(usuario.cdUsuario)
+                        : null
+                    "
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -69,69 +77,72 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import Usuario from '@/type/usuarioType';
+import axios from "axios";
+import { ref, onMounted } from "vue";
+import Usuario from "@/type/usuarioType";
 
-const nome = ref(<string>'');
-const senha = ref('');
-const confirmacaoSenha = ref('');
+const nome = ref(<string>"");
+const senha = ref("");
+const confirmacaoSenha = ref("");
 const ativo = ref(false);
 
 const usuarios = ref<Usuario[]>([]);
 
 const cancelar = () => {
-  nome.value = '';
-  senha.value = '';
-  confirmacaoSenha.value = '';
-  ativo.value = false;  
-}
+  nome.value = "";
+  senha.value = "";
+  confirmacaoSenha.value = "";
+  ativo.value = false;
+};
 
 const cadastrarUsuario = () => {
-  axios.post('http://localhost:8081/api/usuario', {
-    deUsuario: nome.value,
-    senha: senha.value,
-    flAtivo: ativo.value ? 'S' : 'N',
-  })
+  axios
+    .post("http://localhost:8081/api/usuario", {
+      deUsuario: nome.value,
+      senha: senha.value,
+      flAtivo: ativo.value ? "S" : "N",
+    })
     .then((response) => {
-      console.log('Usuário cadastrado com sucesso!', response.data);
-      nome.value = '';
-      senha.value = '';
-      confirmacaoSenha.value = '';
+      console.log("Usuário cadastrado com sucesso!", response.data);
+      nome.value = "";
+      senha.value = "";
+      confirmacaoSenha.value = "";
       ativo.value = false;
 
       fetchUsuarios();
     })
     .catch((error) => {
-      console.error('Erro ao cadastrar usuário:', error);
-    });    
+      console.error("Erro ao cadastrar usuário:", error);
+    });
 };
 
 const exibirUsuario = (usuario: Usuario) => {
-  nome.value = usuario.deUsuario != undefined ? usuario.deUsuario : '' ;
-  senha.value = usuario.senha != undefined ? usuario.senha : '';
-  confirmacaoSenha.value = usuario.senha != undefined ? usuario.senha : '';
-  ativo.value = usuario.flAtivo === 'S';
+  nome.value = usuario.deUsuario != undefined ? usuario.deUsuario : "";
+  senha.value = usuario.senha != undefined ? usuario.senha : "";
+  confirmacaoSenha.value = usuario.senha != undefined ? usuario.senha : "";
+  ativo.value = usuario.flAtivo === "S";
 };
 
 const fetchUsuarios = () => {
-  axios.get('http://localhost:8081/api/usuario')
+  axios
+    .get("http://localhost:8081/api/usuario")
     .then((response) => {
       usuarios.value = response.data;
     })
     .catch((error) => {
-      console.error('Erro ao buscar a lista de usuários:', error);
+      console.error("Erro ao buscar a lista de usuários:", error);
     });
 };
 
-const excluirUsuario = (cdUsuario : number) => {
-  axios.delete(`http://localhost:8081/api/usuario/${cdUsuario}`)
+const excluirUsuario = (cdUsuario: number) => {
+  axios
+    .delete(`http://localhost:8081/api/usuario/${cdUsuario}`)
     .then(() => {
-      console.log('Usuário excluído com sucesso!');
+      console.log("Usuário excluído com sucesso!");
       fetchUsuarios();
     })
     .catch((error) => {
-      console.error('Erro ao excluir usuário:', error);
+      console.error("Erro ao excluir usuário:", error);
     });
 };
 
@@ -141,48 +152,48 @@ onMounted(() => {
 </script>
 
 <style scoped>
-  .form-cadastro-usuario {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  .form-group {
-    margin-bottom: 10px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-  }
-  
-  input[type="text"],
-  input[type="password"],
-  input[type="checkbox"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 3px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
-  button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
+.form-cadastro-usuario {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 3px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
 
 .grid-usuarios {
   margin-top: 20px;
@@ -225,4 +236,4 @@ tr:nth-child(even) {
   border: none;
   cursor: not-allowed;
 }
-  </style>  
+</style>

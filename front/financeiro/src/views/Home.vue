@@ -1,7 +1,16 @@
-<template>
-  <HelloWorld />
+<!-- <template>
+  <Home />
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+import Home from "@/components/HomeComponent.vue";
+</script> -->
+
+<template>
+  <Gasto />
+</template>
+
+<script lang="ts" setup>
+import Gasto from "@/components/ExibirGastosComponent.vue";
 </script>
+

@@ -1,6 +1,6 @@
 export default class Usuario {
-    cdUsuario?: number;
-    deUsuario?: string;
-    senha?: string;
-    flAtivo?: string;
+  cdUsuario?: number;
+  deUsuario?: string;
+  senha?: string;
+  flAtivo?: string;
 }

@@ -1,4 +1,4 @@
 export type FormaPagto = {
-    cdFormaPagto: number;
-    deFormaPagto: string;
+  cdFormaPagto: number;
+  deFormaPagto: string;
 }

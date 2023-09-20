@@ -1,5 +1,6 @@
 package com.rosetim.financeiro.entity.parcelas;
 
+import com.rosetim.financeiro.entity.gastos.GastosEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,4 +43,8 @@ public class ParcelasEntity {
 
     @Column(name = "nuparcela")
     Integer nuParcela;
+
+    @ManyToOne()
+    @JoinColumn(name = "cdgasto", referencedColumnName = "cdgasto", insertable = false, updatable = false)
+    GastosEntity gasto;
 }

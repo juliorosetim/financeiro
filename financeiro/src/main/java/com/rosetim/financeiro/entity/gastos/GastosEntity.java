@@ -3,7 +3,6 @@ package com.rosetim.financeiro.entity.gastos;
 import com.rosetim.financeiro.entity.cartao.CartaoEntity;
 import com.rosetim.financeiro.entity.formaPagto.FormaPagtoEntity;
 import com.rosetim.financeiro.entity.grupo.GrupoEntity;
-import com.rosetim.financeiro.entity.parcelas.ParcelasEntity;
 import com.rosetim.financeiro.entity.usuario.UsuarioEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "gastos")
@@ -28,7 +26,7 @@ public class GastosEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gastos_seq")
     @SequenceGenerator(name = "gastos_seq", sequenceName = "gastos_seq", allocationSize = 1)
     @Column(name = "cdgasto")
-    Long cdgasto;
+    Long cdGasto;
 
     @Column(name = "defatura")
     String deFatura;
@@ -62,7 +60,7 @@ public class GastosEntity {
     @Column(name = "dtprimeiraparcela")
     LocalDate dtPrimeiraParcela;
 
-    @OneToMany
-    @JoinColumn(name = "cdgasto", referencedColumnName = "cdgasto", insertable = false, updatable = false)
-    List<ParcelasEntity> parcelas;
+//    @OneToMany
+//    @JoinColumn(name = "cdgasto", referencedColumnName = "cdgasto", insertable = false, updatable = false)
+//    List<ParcelasEntity> parcelas;
 }
