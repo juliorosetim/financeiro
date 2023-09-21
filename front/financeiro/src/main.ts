@@ -6,6 +6,7 @@
 
 // Components
 import App from './App.vue'
+import '@mdi/font/css/materialdesignicons.css'
 
 // Composables
 import { createApp } from 'vue'

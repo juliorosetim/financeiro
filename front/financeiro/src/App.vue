@@ -59,7 +59,7 @@
           ></v-list-item>
 
           <v-list-item
-            prepend-icon="mdi-account-group-outline"
+            prepend-icon="mdi mdi-cash-register"
             title="Forma Pagto"
             value="formaPagto"
             :to="{ path: '/cadastroFormaPgto' }"
@@ -67,13 +67,13 @@
           </v-list-item>
 
           <v-list-item
-            prepend-icon="mdi-account-group-outline"
+            prepend-icon="mdi mdi-select-group"
             title="Grupo"
             value="grupo"
             :to="{ path: '/cadastroGrupo' }"
           ></v-list-item>
           <v-list-item
-            prepend-icon="mdi-local-atm"
+            prepend-icon="mdi-cash-sync"
             title="Gastos"
             value="gastos"
             :to="{ path: '/cadastroGastos' }"
@@ -89,9 +89,7 @@
 </template>
 
 <script setup lang="ts">
-// import path from "path";
 import { ref } from "vue";
-import { mdiAccountGroupOutline } from "@mdi/font";
 
 const drawer = ref("");
 const rail = ref("");
