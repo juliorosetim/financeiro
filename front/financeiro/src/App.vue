@@ -1,18 +1,3 @@
-<!-- <template>
-  <v-nav class="classnav">
-    <router-link to="/">Home</router-link>
-    <router-link to="/cadastroUsuario">Usuário</router-link>
-    <router-link to="/cadastroCartao">Cartão</router-link>
-    <router-link to="/cadastroFormaPgto">Forma Pgto</router-link>
-    <router-link to="/cadastroGrupo">Grupo</router-link>
-    <router-link to="/cadastroGastos">Gastos</router-link>
-  </v-nav>
-  <router-view />
-</template>
-
-<script setup lang="ts">
-</script> -->
-
 <template>
   <v-card>
     <v-layout>
@@ -22,11 +7,12 @@
         permanent
         @click="rail = false"
       >
-        <v-list-item
+        <!-- <v-list-item
           prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
           title="Usuário teste"
           nav
-        >
+        > -->
+        <v-list-item title="Usuário teste" nav>
           <template v-slot:append>
             <v-btn
               variant="text"
@@ -72,6 +58,14 @@
             value="grupo"
             :to="{ path: '/cadastroGrupo' }"
           ></v-list-item>
+
+          <v-list-item
+            prepend-icon="mdi mdi-view-dashboard-edit-outline"
+            title="Categoria"
+            value="categoria"
+            :to="{ path: '/cadastroCategoria' }"
+          ></v-list-item>
+
           <v-list-item
             prepend-icon="mdi-cash-sync"
             title="Gastos"
@@ -90,31 +84,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import "@/assets/css/form-styles.css";
 
 const drawer = ref("");
 const rail = ref("");
 </script>
-
-<style scoped>
-.classnav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #560bad;
-}
-
-.classnav a {
-  color: hwb(0 100% 0%);
-  font-size: 18px;
-  text-decoration: none;
-}
-
-.classnav a:hover {
-  color: #c692f7;
-}
-
-.classnav a.active {
-  color: #c692f7;
-}
-</style>

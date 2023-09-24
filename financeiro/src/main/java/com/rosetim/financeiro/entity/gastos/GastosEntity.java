@@ -1,9 +1,11 @@
 package com.rosetim.financeiro.entity.gastos;
 
 import com.rosetim.financeiro.entity.cartao.CartaoEntity;
+import com.rosetim.financeiro.entity.categoria.CategoriaEntity;
 import com.rosetim.financeiro.entity.formaPagto.FormaPagtoEntity;
 import com.rosetim.financeiro.entity.grupo.GrupoEntity;
 import com.rosetim.financeiro.entity.usuario.UsuarioEntity;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,10 +41,14 @@ public class GastosEntity {
     GrupoEntity grupo;
 
     @OneToOne()
+    @JoinColumn(name = "cdcategoria")
+    CategoriaEntity categoria;
+
+    @OneToOne()
     @JoinColumn(name = "cdformaPagto")
     FormaPagtoEntity formaPagto;
 
-    @OneToOne()
+    @ManyToOne(optional = true)
     @JoinColumn(name = "cdcartao")
     CartaoEntity cartao;
 
@@ -57,10 +63,6 @@ public class GastosEntity {
     @JoinColumn(name = "cdusuario")
     UsuarioEntity usuario;
 
-    @Column(name = "dtprimeiraparcela")
-    LocalDate dtPrimeiraParcela;
-
-//    @OneToMany
-//    @JoinColumn(name = "cdgasto", referencedColumnName = "cdgasto", insertable = false, updatable = false)
-//    List<ParcelasEntity> parcelas;
+    @Column(name = "dtlancamento")
+    LocalDate dtLancamento;
 }

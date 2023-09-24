@@ -49,7 +49,7 @@
                   <v-btn
                     class="button-grid"
                     @click="exibirFormaPagto(formaPagto)"
-                    ><v-icon>mdi-eye</v-icon></v-btn
+                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></v-btn
                   >
                 </td>
                 <td>

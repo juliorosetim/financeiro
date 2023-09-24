@@ -43,6 +43,21 @@
           <v-select
             outlined
             dense
+            v-model="selectedCategoria"
+            :items="categorias"
+            item-value="cdCategoria"
+            item-text="deCategoria"
+            item-title="deCategoria"
+            label="Categoria"
+            density="comfortable"
+            class="select"
+          />
+        </div>
+
+        <div class="input-container">
+          <v-select
+            outlined
+            dense
             v-model="selectedFormaPagto"
             :items="formasPagto"
             item-value="cdFormaPagto"
@@ -73,6 +88,20 @@
           <input
             class="input"
             type="number"
+            id="vlrTotal"
+            v-model="vlrTotal"
+            required
+            placeholder="Valor total"
+            step=".01"
+            min="0"
+            max="99"
+          />
+        </div>
+
+        <div class="input-container">
+          <input
+            class="input"
+            type="number"
             id="qtdeParcela"
             v-model="qtdeParcela"
             placeholder="Qtde de parcelas"
@@ -81,25 +110,14 @@
         </div>
 
         <div class="input-container">
-          <input
-            class="input"
-            type="number"
-            id="vlrTotal"
-            v-model="vlrTotal"
-            required
-            placeholder="Valor total"
-          />
-        </div>
-
-        <div class="input-container">
-          <v-label for="dtPrimeiraParcela"></v-label>
+          <v-label for="dtLancamento"></v-label>
           <input
             class="input"
             type="date"
-            id="dtPrimeiraParcela"
-            v-model="dtPrimeiraParcela"
+            id="dtLancamento"
+            v-model="dtLancamento"
             required
-            placeholder="Data Venc. primeira parcela"
+            placeholder="Data de lançamento"
           />
         </div>
 
@@ -113,30 +131,113 @@
         <button class="button-custom" @click="cancelar">Cancelar</button>
       </div>
     </card>
+
+    <v-card>
+      <div class="grid-gastos">
+        <h2>Lista de gastos</h2>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left" style="width: 40%">Descrição fatura</th>
+                <th class="text-left" style="width: 35%">
+                  Descrição Personalizada
+                </th>
+                <th class="text-left" style="width: 10%">Grupo</th>
+                <th class="text-left" style="width: 10%">Categoria</th>
+                <th class="text-left" style="width: 10%">Valor</th>
+                <th class="text-left" style="width: 10%"></th>
+                <th class="text-left" style="width: 10%"></th>
+                <th class="text-left" style="width: 10%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="gasto in gastos" :key="gasto.cdGasto">
+                <td>{{ gasto.deFatura }}</td>
+                <td>{{ gasto.deDescricao }}</td>
+                <td>{{ gasto.grupo.deGrupo }}</td>
+                <td>{{ gasto.categoria.deCategoria }}</td>
+                <td>{{ formatarValorMonetario(gasto.vlrTotal) }}</td>
+                <td>
+                  <v-btn class="button-grid" @click="exibirGasto(gasto)"
+                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></v-btn
+                  >
+                </td>
+                <td>
+                  <v-btn
+                    class="button-grid"
+                    @click="
+                      gasto.cdGasto !== undefined
+                        ? excluirGasto(gasto.cdGasto)
+                        : null
+                    "
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </td>
+                <td>
+                  <v-btn class="button-grid" @click="exibirParcelas(gasto)"
+                    ><v-icon>mdi-eye</v-icon></v-btn
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </div>
+    </v-card>
+
+    <ModalParcelas
+      :parcelas="parcelasGasto"
+      :showModal="showModal"
+      @fecharModal="fecharModal"
+    />
   </v-container>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { Cartao } from "@/type/CartaoType";
 import { Grupo } from "@/type/GrupoType";
 import { FormaPagto } from "@/type/FormaPagtoType";
 import "@/assets/css/form-styles.css";
+import { format } from "date-fns";
+import { Categoria } from "@/type/CategoriaType";
+import { Gasto } from "@/type/GastoType";
+import { ParcelasGastosDto } from "@/type/ParcelasGastosDto";
+import ModalParcelas from "./ModalParcelas.vue";
 
 const cartoes = ref<Cartao[]>([]);
 const grupos = ref<Grupo[]>([]);
 const formasPagto = ref<FormaPagto[]>([]);
+const categorias = ref<Categoria[]>([]);
+const gastos = ref<Gasto[]>([]);
 
 const selectedCartao = ref<Cartao | null>(null);
 const selectedGrupo = ref<Grupo | null>(null);
 const selectedFormaPagto = ref<FormaPagto | null>(null);
+const selectedCategoria = ref<Categoria | null>(null);
 
+const gastoSelected = ref<Gasto | null>(null);
+
+const isEditing = ref(false);
+const parcelasGasto = ref<ParcelasGastosDto[] | null>(null);
+
+const cdGasto = ref<number | null>(null);
 const deFatura = ref("");
 const deDescricao = ref("");
-const qtdeParcela = ref("");
-const vlrTotal = ref("");
-const dtPrimeiraParcela = ref("");
+const qtdeParcela = ref<number | null>(null);
+const vlrTotal = ref<number | null>(null);
+
+const showModal = ref(false);
+
+const obterDataAtualFormatada = () => {
+  const dataAtual = new Date();
+  return format(dataAtual, "yyyy-MM-dd");
+};
+
+const dtLancamento = ref(obterDataAtualFormatada());
 
 const fetchCartoes = async () => {
   axios
@@ -171,53 +272,196 @@ const fetchFormasPagto = async () => {
     });
 };
 
-const cadastrarGasto = () => {
+const fetchCategoria = async () => {
   axios
-    .post("http://localhost:8081/api/gastos", {
-      deFatura: deFatura.value,
-      deDescricao: deDescricao.value,
-      grupo: {
-        cdGrupo: selectedGrupo.value,
-      },
-      formaPagto: {
-        cdFormaPagto: selectedFormaPagto.value,
-      },
-      cartao: {
-        cdCartao: selectedCartao.value,
-      },
-      qtdeParcela: qtdeParcela.value,
-      vlrParcela: 0,
-      vlrTotal: vlrTotal.value,
-      dtPrimeiraParcela: dtPrimeiraParcela.value,
-      usuario: {
-        cdUsuario: 1,
-      },
-    })
+    .get("http://localhost:8081/api/categoria")
     .then((response) => {
-      console.log("Salvo com sucesso");
-      deFatura.value = "";
-      deDescricao.value = "";
-      selectedGrupo.value = null;
-      selectedFormaPagto.value = null;
-      selectedCartao.value = null;
-      qtdeParcela.value = "";
-      vlrTotal.value = "";
-      dtPrimeiraParcela.value = "";
+      categorias.value = response.data;
     })
     .catch((error) => {
-      console.log("Erro ao salvar o gasto");
+      console.error("Erro ao buscar a lista de categorias", error);
     });
 };
 
-const cancelar = () => {
-  return null;
+const fetchGastos = async () => {
+  axios
+    .get("http://localhost:8081/api/gastos")
+    .then((response) => {
+      gastos.value = response.data;
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar a lista de gastos", error);
+    });
+};
+
+const fetchParcelas = async (cdGasto: number) => {
+  axios
+    .get(`http://localhost:8081/api/parcelas/parcelas-por-gasto/${cdGasto}`)
+    .then((response) => {
+      parcelasGasto.value = response.data;
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar a lista de gastos", error);
+    });
+};
+
+const cadastrarGasto = () => {
+  if (!isEditing.value) {
+    console.log("não editando");
+    axios
+      .post("http://localhost:8081/api/gastos", {
+        deFatura: deFatura.value,
+        deDescricao: deDescricao.value,
+        grupo: {
+          cdGrupo: selectedGrupo.value,
+        },
+        categoria: {
+          cdCategoria: selectedCategoria.value,
+        },
+        formaPagto: {
+          cdFormaPagto: selectedFormaPagto.value,
+        },
+        cartao: {
+          cdCartao: selectedCartao.value,
+        },
+        qtdeParcela: qtdeParcela.value,
+        vlrParcela: 0,
+        vlrTotal: vlrTotal.value,
+        dtLancamento: dtLancamento.value,
+        usuario: {
+          cdUsuario: 1,
+        },
+      })
+      .then((response) => {
+        console.log("Salvo com sucesso");
+        deFatura.value = "";
+        deDescricao.value = "";
+        selectedGrupo.value = null;
+        selectedCategoria.value = null;
+        selectedFormaPagto.value = null;
+        selectedCartao.value = null;
+        qtdeParcela.value = 1;
+        vlrTotal.value = 0;
+        dtLancamento.value = obterDataAtualFormatada();
+        fetchGastos();
+      })
+      .catch((error) => {
+        console.log("Erro ao salvar o gasto");
+      });
+  } else {
+    console.log("editando");
+    axios
+      .put("http://localhost:8081/api/gastos", {
+        cdGasto: cdGasto.value,
+        deFatura: deFatura.value,
+        deDescricao: deDescricao.value,
+        grupo: { cdGrupo: selectedGrupo.value },
+        categoria: { cdCategoria: selectedCategoria.value },
+        formaPagto: { cdFormaPagto: selectedFormaPagto.value },
+        cartao: { cdCartao: selectedCartao.value },
+        qtdeParcela: qtdeParcela.value,
+        vlrParcela: 0,
+        vlrTotal: vlrTotal.value,
+        dtLancamento: dtLancamento.value,
+        usuario: {
+          cdUsuario: 1,
+        },
+      })
+      .then((response) => {
+        console.log("Salvo com sucesso");
+        cdGasto.value = null;
+        deFatura.value = "";
+        deDescricao.value = "";
+        selectedGrupo.value = null;
+        selectedCategoria.value = null;
+        selectedFormaPagto.value = null;
+        selectedCartao.value = null;
+        qtdeParcela.value = null;
+        vlrTotal.value = null;
+        dtLancamento.value = obterDataAtualFormatada();
+        fetchGastos();
+      })
+      .catch((error) => {
+        console.log("Erro ao salvar o gasto");
+      });
+  }
+
+  isEditing.value = false;
+};
+
+function cancelar() {
+  cdGasto.value = null;
+  deFatura.value = "";
+  deDescricao.value = "";
+  selectedGrupo.value = null;
+  selectedCategoria.value = null;
+  selectedFormaPagto.value = null;
+  selectedCartao.value = null;
+  qtdeParcela.value = null;
+  vlrTotal.value = null;
+  dtLancamento.value = obterDataAtualFormatada();
+  isEditing.value = false;
+}
+
+const excluirGasto = (cdGasto: number) => {
+  axios
+    .delete(`http://localhost:8081/api/gastos/${cdGasto}`)
+    .then(() => {
+      console.log("Gasto excluído com sucesso!");
+      fetchGastos();
+    })
+    .catch((error) => {
+      console.error("Erro ao excluir gasto:", error);
+    });
+};
+
+const exibirGasto = (gasto: Gasto) => {
+  cdGasto.value = gasto.cdGasto;
+  deFatura.value = gasto.deFatura;
+  deDescricao.value = gasto.deDescricao;
+  selectedGrupo.value = { ...gasto.grupo };
+  selectedCategoria.value = { ...gasto.categoria };
+  selectedFormaPagto.value = { ...gasto.formaPagto };
+  selectedCartao.value = { ...gasto.cartao };
+  qtdeParcela.value = gasto.qtdeParcela;
+  vlrTotal.value = gasto.vlrTotal;
+  dtLancamento.value = gasto.dtLancamento;
+
+  isEditing.value = true;
+};
+
+const dataFormatada = (dtVencimento: string) => {
+  return dtVencimento ? format(new Date(dtVencimento), "dd/MM/yyyy") : "";
+};
+
+const formatarValorMonetario = (valor: number) => {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 };
 
 onMounted(() => {
   fetchCartoes();
   fetchGrupos();
   fetchFormasPagto();
+  fetchCategoria();
+  fetchGastos();
 
-  qtdeParcela.value = "1";
+  isEditing.value = false;
+  // qtdeParcela.value = 1;
+  dtLancamento.value = obterDataAtualFormatada();
 });
+
+const exibirParcelas = (gasto: Gasto) => {
+  gastoSelected.value = gasto;
+
+  fetchParcelas(gastoSelected.value.cdGasto);
+
+  showModal.value = true;
+};
+
+const fecharModal = () => {
+  showModal.value = false;
+};
 </script>

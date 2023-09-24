@@ -46,4 +46,12 @@ public class ParcelasController {
 
         return ResponseEntity.status(HttpStatus.OK).body(parcelasByData);
     }
+
+    @GetMapping("/parcelas-por-gasto/{cdGasto}")
+    public ResponseEntity findParcelasByGasto(@PathVariable Long cdGasto) throws Exception {
+
+        List<ParcelasGastosDto> parcelasByData = parcelasService.findParcelasByGasto(cdGasto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(parcelasByData);
+    }
 }

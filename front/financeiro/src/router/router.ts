@@ -36,6 +36,11 @@ const routes = [
         name: 'cadastroGastos',
         component: () => import(/* webpackChunkName: "cadastroGrupo" */ '@/views/CadastroGastos.vue'),
       },
+      {
+        path: '/cadastroCategoria',
+        name: 'cadastroCategoria',
+        component: () => import(/* webpackChunkName: "cadastroCategoria" */ '@/views/CadastroCategoria.vue'),
+      },
     ],
   },
 ]

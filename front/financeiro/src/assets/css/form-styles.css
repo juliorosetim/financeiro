@@ -1,11 +1,25 @@
+:root {
+    --cor-amarela: #f4e196;
+    --cor-verde-claro: #a6bf91;
+    --cor-verde: #5f9982;
+    --cor-roxo-claro: #78576b;
+    --cor-roxo: #400428;
+    --cor-branca: #fff;
+    --cor-cinza-claro: #f2f2f2;
+}
+
 .form-cadastro {
-    max-width: 600px;
+    max-width: 1200;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+    color: var(--cor-verde-claro) !important;
 }
 
 /* CSS inputs --------------------------------------------------------------------------*/
@@ -15,26 +29,24 @@
     position: relative;
     border-radius: 1rem;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #560bad;
     padding: 8px;
     width: 100%;
 }
 
 .input {
-    color: #560bad;
-    border: 2px solid #560bad;
-    border-radius: 10px;
-    padding: 10px 25px;
-    background: transparent;
+    border: 2px solid var(--cor-verde-claro);
+    border-radius: 10px !important;
+    padding: 10px 25px !important;
+    background: transparent !important;
+    color: var(--cor-verde);
 }
 
 .input:active {
-    box-shadow: 1px 1px 5px #560bad inset;
+    box-shadow: 1px 1px 5px var(--cor-verde-claro) inset !important;
 }
 
 /* CSS Buttons --------------------------------------------------------------------------*/
 .button-custom {
-    --color: #560bad;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     display: inline-block;
     width: 8em;
@@ -43,27 +55,27 @@
     margin: 20px;
     position: relative;
     overflow: hidden;
-    border: 2px solid var(--color);
+    border: 2px solid var(--cor-verde-claro);
     transition: color 0.5s;
     z-index: 1;
     font-size: 17px;
     border-radius: 10px;
     font-weight: 350;
-    color: var(--color);
+    color: var(--cor-verde-claro);
 }
 
 .button-custom:before {
     content: "";
     position: absolute;
     z-index: -1;
-    background: var(--color);
+    background: var(--cor-verde);
     height: 150px;
     width: 200px;
     border-radius: 50%;
 }
 
 .button-custom:hover {
-    color: #fff;
+    color: var(--cor-branca);
 }
 
 .button-custom:before {
@@ -78,40 +90,40 @@
 }
 
 .button-custom:active:before {
-    background: #3a0ca3;
+    background: var(--cor-verde);
     transition: background 0s;
 }
 
 /* CSS Button Grid -------------------------------------------------------------------------------------------------*/
 .button-grid {
-    --color: #560bad !important;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
     display: inline-block !important;
     line-height: 1.6em !important;
     margin: 3px !important;
     position: relative !important;
     overflow: hidden !important;
-    border: 1px solid var(--color) !important;
+    border: 1px solid var(--cor-verde-claro) !important;
     transition: color 0.5s !important;
     z-index: 1 !important;
     font-size: 17px !important;
     border-radius: 10px !important;
+    border: none !important;
     font-weight: 350 !important;
-    color: var(--color) !important;
+    color: var(--cor-verde-claro) !important;
 }
 
 .button-grid:before {
     content: "" !important;
     position: absolute !important;
     z-index: -1 !important;
-    background: var(--color) !important;
+    background: var(--cor-verde) !important;
     height: 150px !important;
     width: 200px !important;
     border-radius: 50% !important;
 }
 
 .button-grid:hover {
-    color: #fff !important;
+    color: var(--cor-branca) !important;
 }
 
 .button-grid:before {
@@ -126,7 +138,7 @@
 }
 
 .button-grid:active:before {
-    background: #3a0ca3 !important;
+    background: var(--cor-verde-claro) !important;
     transition: background 0s !important;
 }
 
@@ -138,12 +150,12 @@ td {
 }
 
 thead {
-    background-color: #8707ff !important;
-    color: #fff !important;
+    background-color: var(--cor-verde-claro) !important;
+    color: var(--cor-branca) !important;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2 !important;
+    background-color: var(--cor-cinza-claro) !important;
 }
 
 /* CSS Switch --------------------------------------------------------------------------*/
@@ -178,13 +190,13 @@ tr:nth-child(even) {
     width: 23px;
     height: 23px;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: var(--cor-branca);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
 
 .checkbox-apple input[type="checkbox"]:checked+label {
-    background: linear-gradient(to bottom, #8707ff, #8707ff);
+    background: linear-gradient(to bottom, #a6bf91, #a6bf91);
 }
 
 .checkbox-apple input[type="checkbox"]:checked+label:after {
@@ -211,4 +223,24 @@ tr:nth-child(even) {
 .select {
     border: none;
     padding: 0;
+}
+
+/* CSS v-navigation-drawer --------------------------------------------------------------------------*/
+.v-navigation-drawer {
+    color: hwb(0 100% 0%);
+    background-color: var(--cor-verde-claro) !important;
+}
+
+.v-navigation-drawer a {
+    color: hwb(0 100% 0%);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.v-navigation-drawer a:hover {
+    color: var(--cor-verde);
+}
+
+.v-navigation-drawer a.active {
+    color: var(--cor-verde);
 }

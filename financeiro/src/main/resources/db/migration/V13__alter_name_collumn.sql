@@ -1,0 +1,1 @@
+ALTER TABLE gastos RENAME COLUMN dtprimeiraparcela TO dtlancamento;

@@ -41,26 +41,8 @@
             autocomplete="diaVencimento"
             v-model="diaVencimento"
           />
-          <!-- <label class="input-label" for="text">Name</label> -->
         </p>
 
-        <!-- <div class="form-group">
-          <v-label for="nome">Cartão:</v-label>
-          <input type="text" id="nome" v-model="deCartao" required />
-        </div> -->
-        <!-- <div class="form-group">
-          <v-label for="diaVirada">Dia Virada:</v-label>
-          <input type="text" id="diaVirada" v-model="diaVirada" required />
-        </div> -->
-        <!-- <div class="form-group">
-          <v-label for="diaVencimento">Vencimento</v-label>
-          <input
-            type="text"
-            id="diaVencimento"
-            v-model="diaVencimento"
-            required
-          />
-        </div> -->
         <button class="button-custom" @click="cadastrarCartao">
           Cadastrar
         </button>
@@ -91,12 +73,12 @@
                 <td>{{ cartao.diaVirada }}</td>
                 <td>{{ cartao.diaVencimento }}</td>
                 <td>
-                  <v-btn class="button-grid" @click="exibirCartao(cartao)"
-                    ><v-icon>mdi-eye</v-icon></v-btn
+                  <span class="button-grid" @click="exibirCartao(cartao)"
+                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></span
                   >
                 </td>
                 <td>
-                  <v-btn
+                  <span
                     class="button-grid"
                     @click="
                       cartao.cdCartao !== undefined
@@ -105,7 +87,7 @@
                     "
                   >
                     <v-icon>mdi-delete</v-icon>
-                  </v-btn>
+                  </span>
                 </td>
               </tr>
             </tbody>

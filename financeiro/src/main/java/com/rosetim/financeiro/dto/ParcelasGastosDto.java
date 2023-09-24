@@ -25,4 +25,5 @@ public class ParcelasGastosDto {
     String conferido;
     Integer nuParcela;
     String deCartao;
+    String deCategoria;
 }

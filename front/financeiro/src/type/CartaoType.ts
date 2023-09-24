@@ -1,8 +1,8 @@
 export type Cartao = {
   cdCartao: number;
   deCartao: string;
-  diaVirada: string;
-  diaVencimento: string;
+  diaVirada: number;
+  diaVencimento: number;
 }
 
 export type CartaoClear = {

@@ -28,7 +28,7 @@
     </v-card> -->
 
     <v-card>
-      <div class="grid-usuarios">
+      <div class="grid-gastos">
         <h2>Lista de gastos</h2>
         <v-simple-table>
           <template v-slot:default>
@@ -40,6 +40,7 @@
                 </th>
                 <th class="text-left" style="width: 8%">Parcela</th>
                 <th class="text-left" style="width: 25%">Cartão</th>
+                <th class="text-left" style="width: 25%">Categoria</th>
                 <th class="text-left" style="width: 10%">Valor</th>
               </tr>
             </thead>
@@ -49,7 +50,8 @@
                 <td>{{ parcela.deDescricao }}</td>
                 <td>{{ parcela.nuParcela }} / {{ parcela.qtdeParcela }}</td>
                 <td>{{ parcela.deCartao }}</td>
-                <td>{{ parcela.vlrParcela }}</td>
+                <td>{{ parcela.deCategoria }}</td>
+                <td>{{ formatarValorMonetario(parcela.vlrParcela) }}</td>
               </tr>
             </tbody>
           </template>
@@ -117,6 +119,14 @@ onMounted(() => {
 
   fetchGastos();
 });
+
+const formatarValorMonetario = (valor: number) => {
+  // Formatando o valor com duas casas decimais
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+};
 </script>
 
 <style scoped>

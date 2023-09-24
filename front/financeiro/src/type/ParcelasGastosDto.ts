@@ -9,4 +9,5 @@ export type ParcelasGastosDto = {
   conferido: string;
   nuParcela: number;
   deCartao: string;
+  deCategoria: string;
 }
