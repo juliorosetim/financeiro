@@ -6,6 +6,16 @@
     --cor-roxo: #400428;
     --cor-branca: #fff;
     --cor-cinza-claro: #f2f2f2;
+    --border-radios: 10px;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form {
+    max-width: 1200;
+    font-size: 14px;
 }
 
 .form-cadastro {
@@ -15,10 +25,10 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h2 {
+    text-align: center;
     color: var(--cor-verde-claro) !important;
 }
 
@@ -29,21 +39,26 @@ h2 {
     position: relative;
     border-radius: 1rem;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    padding: 8px;
+    padding: 1px;
     width: 100%;
 }
 
 .input {
-    border: 2px solid var(--cor-verde-claro);
-    border-radius: 10px !important;
+    /* border-bottom: 1px solid var(--cor-verde-claro); */
+    border: 1px solid var(--cor-verde-claro);
+    border-radius: var(--border-radios);
     padding: 10px 25px !important;
     background: transparent !important;
-    color: var(--cor-verde);
+
 }
 
 .input:active {
-    box-shadow: 1px 1px 5px var(--cor-verde-claro) inset !important;
+    /* box-shadow: 1px 1px 5px var(--cor-verde-claro) inset !important; */
+    /* border: none !important; */
+    border: 1px solid var(--cor-roxo-claro) !important;
+    border-radius: var(--border-radios);
 }
+
 
 /* CSS Buttons --------------------------------------------------------------------------*/
 .button-custom {
@@ -71,7 +86,8 @@ h2 {
     background: var(--cor-verde);
     height: 150px;
     width: 200px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
+    border-radius: var(--border-radios);
 }
 
 .button-custom:hover {
@@ -106,7 +122,8 @@ h2 {
     transition: color 0.5s !important;
     z-index: 1 !important;
     font-size: 17px !important;
-    border-radius: 10px !important;
+    /* border-radius: 10px !important; */
+    border-radius: var(--border-radios) !important;
     border: none !important;
     font-weight: 350 !important;
     color: var(--cor-verde-claro) !important;
@@ -119,7 +136,8 @@ h2 {
     background: var(--cor-verde) !important;
     height: 150px !important;
     width: 200px !important;
-    border-radius: 50% !important;
+    /* border-radius: 50% !important; */
+    border-radius: var(--border-radios);
 }
 
 .button-grid:hover {
@@ -147,6 +165,7 @@ th,
 td {
     padding: 10px 10px 10px 20px !important;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+    width: 100%;
 }
 
 thead {
@@ -220,20 +239,76 @@ tr:nth-child(even) {
 }
 
 /* CSS v-select --------------------------------------------------------------------------*/
-.select {
+
+
+.v-select .v-field .v-text-field__prefix,
+.v-select .v-field .v-text-field__suffix,
+.v-select .v-field .v-field__input,
+.v-select .v-field.v-field {
+    cursor: pointer;
+    /* background-color: #f4e196; */
+    border-radius: var(--border-radios) !important;
     border: none;
-    padding: 0;
+}
+
+.v-select .v-field .v-field__input>input {
+    align-self: flex-start;
+    opacity: 1;
+    flex: 0 0;
+    position: absolute;
+    width: 100%;
+    transition: none;
+    pointer-events: none;
+    caret-color: transparent;
+    border: none;
+}
+
+.v-select .v-select__selection {
+    margin: 0px 0px 0px 0px !important;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.v-select .v-field--dirty .v-select__selection {
+    margin-inline-end: 1px !important;
+}
+
+.v-select__content {
+    overflow: hidden;
+    box-shadow: 0px 2px 4px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 4px 5px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 10px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12));
+    border-radius: var(--border-radios) !important;
+    border: none !important;
+}
+
+/* .v-select .v-select__selection:first-child {
+    margin-inline-start: 0;
+    border-radius: var(--border-radios);
+} */
+
+/* .v-select--selected .v-field .v-field__input>input {
+    opacity: 0;
+    border-radius: var(--border-radios);
+} */
+
+.v-select__menu-icon {
+    margin-inline-start: 4px;
+    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.v-select__menu-icon {
+    margin-inline-start: 4px;
+    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* CSS v-navigation-drawer --------------------------------------------------------------------------*/
 .v-navigation-drawer {
     color: hwb(0 100% 0%);
     background-color: var(--cor-verde-claro) !important;
+    font-size: 18px;
 }
+
 
 .v-navigation-drawer a {
     color: hwb(0 100% 0%);
-    font-size: 18px;
     text-decoration: none;
 }
 
@@ -244,3 +319,16 @@ tr:nth-child(even) {
 .v-navigation-drawer a.active {
     color: var(--cor-verde);
 }
+
+.v-app-bar {
+    color: hwb(0 100% 0%);
+    background-color: var(--cor-verde-claro) !important;
+}
+
+.v-toolbar-title {
+    color: hwb(0 100% 0%);
+    background-color: var(--cor-verde-claro) !important;
+    width: 400px !important;
+}
+
+/* CSS v-navigation-drawer --------------------------------------------------------------------------*/

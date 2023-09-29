@@ -1,197 +1,192 @@
 <template>
   <v-container>
-    <card>
-      <div class="form-cadastro">
-        <div class="input-container">
-          <input
-            class="input"
-            type="text"
-            id="deFatura"
-            v-model="deFatura"
-            required
-            placeholder="Descrição da fatura"
-          />
+    <div class="form">
+      <card>
+        <div class="form-cadastro">
+          <h2>Lançamento</h2>
+
+          <div class="input-container">
+            <v-label for="deDescricao"></v-label>
+            <input
+              class="input"
+              type="text"
+              id="deDescricao"
+              v-model="deDescricao"
+              required
+              placeholder="Descrição do Lançamento"
+            />
+          </div>
+
+          <div class="input-container">
+            <v-select
+              outlined
+              v-model="selectedGrupo"
+              :items="grupos"
+              item-value="cdGrupo"
+              item-text="deGrupo"
+              item-title="deGrupo"
+              label="Grupo"
+              density="comfortable"
+            />
+          </div>
+
+          <div class="input-container">
+            <v-select
+              v-model="selectedCategoria"
+              :items="categorias"
+              item-value="cdCategoria"
+              item-text="deCategoria"
+              item-title="deCategoria"
+              label="Categoria"
+              density="comfortable"
+            />
+          </div>
+
+          <div class="input-container">
+            <v-select
+              outlined
+              dense
+              v-model="selectedFormaPagto"
+              :items="formasPagto"
+              item-value="cdFormaPagto"
+              item-text="deFormaPagto"
+              item-title="deFormaPagto"
+              label="Forma Pagamento"
+              density="comfortable"
+            />
+          </div>
+
+          <div class="input-container">
+            <v-select
+              outlined
+              dense
+              v-model="selectedCartao"
+              :items="cartoes"
+              item-value="cdCartao"
+              item-text="deCartao"
+              item-title="deCartao"
+              label="Cartão"
+              density="comfortable"
+            />
+          </div>
+
+          <div class="input-container">
+            <input
+              class="input"
+              type="number"
+              id="vlrTotal"
+              v-model="vlrTotal"
+              required
+              placeholder="Valor total"
+              step=".01"
+              min="0"
+              max="99"
+            />
+          </div>
+
+          <div class="input-container">
+            <input
+              class="input"
+              type="number"
+              id="qtdeParcela"
+              v-model="qtdeParcela"
+              placeholder="Quantidade de parcelas"
+              required
+            />
+          </div>
+
+          <div class="input-container">
+            <v-label for="dtLancamento"></v-label>
+            <input
+              class="input"
+              type="date"
+              id="dtLancamento"
+              v-model="dtLancamento"
+              required
+              placeholder="Data de lançamento"
+            />
+          </div>
+
+          <div class="input-container">
+            <input
+              class="input"
+              type="text"
+              id="deFatura"
+              v-model="deFatura"
+              required
+              placeholder="Observação"
+            />
+          </div>
+          <button
+            class="button-custom"
+            @click="cadastrarGasto"
+            style="margin-right: 10px"
+          >
+            Cadastrar
+          </button>
+          <button class="button-custom" @click="cancelar">Cancelar</button>
         </div>
-        <div class="input-container">
-          <v-label for="deDescricao"></v-label>
-          <input
-            class="input"
-            type="text"
-            id="deDescricao"
-            v-model="deDescricao"
-            required
-            placeholder="Descrição personalizada"
-          />
+      </card>
+
+      <v-card style="padding-top: 30px">
+        <div class="grid-gastos">
+          <h2 style="padding-bottom: 10px">Lista de Lançamentos</h2>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left" style="width: 35%">
+                    Descrição do Lançamento
+                  </th>
+                  <th class="text-left" style="width: 10%">Grupo</th>
+                  <th class="text-left" style="width: 10%">Categoria</th>
+                  <th class="text-left" style="width: 10%">Valor</th>
+                  <th class="text-left" style="width: 10%"></th>
+                  <th class="text-left" style="width: 10%"></th>
+                  <th class="text-left" style="width: 10%"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="gasto in gastos" :key="gasto.cdGasto">
+                  <td>{{ gasto.deDescricao }}</td>
+                  <td>{{ gasto.grupo.deGrupo }}</td>
+                  <td>{{ gasto.categoria.deCategoria }}</td>
+                  <td>{{ formatarValorMonetario(gasto.vlrTotal) }}</td>
+                  <td>
+                    <span class="button-grid" @click="exibirGasto(gasto)"
+                      ><v-icon>mdi mdi-text-box-edit-outline</v-icon></span
+                    >
+                  </td>
+                  <td>
+                    <span
+                      class="button-grid"
+                      @click="
+                        gasto.cdGasto !== undefined
+                          ? excluirGasto(gasto.cdGasto)
+                          : null
+                      "
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="button-grid" @click="exibirParcelas(gasto)"
+                      ><v-icon>mdi-eye</v-icon></span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </div>
+      </v-card>
 
-        <div class="input-container">
-          <v-select
-            outlined
-            dense
-            v-model="selectedGrupo"
-            :items="grupos"
-            item-value="cdGrupo"
-            item-text="deGrupo"
-            item-title="deGrupo"
-            label="Grupo"
-            density="comfortable"
-            class="select"
-          />
-        </div>
-
-        <div class="input-container">
-          <v-select
-            outlined
-            dense
-            v-model="selectedCategoria"
-            :items="categorias"
-            item-value="cdCategoria"
-            item-text="deCategoria"
-            item-title="deCategoria"
-            label="Categoria"
-            density="comfortable"
-            class="select"
-          />
-        </div>
-
-        <div class="input-container">
-          <v-select
-            outlined
-            dense
-            v-model="selectedFormaPagto"
-            :items="formasPagto"
-            item-value="cdFormaPagto"
-            item-text="deFormaPagto"
-            item-title="deFormaPagto"
-            label="Forma Pagamento"
-            density="comfortable"
-            class="select"
-          />
-        </div>
-
-        <div class="input-container">
-          <v-select
-            outlined
-            dense
-            v-model="selectedCartao"
-            :items="cartoes"
-            item-value="cdCartao"
-            item-text="deCartao"
-            item-title="deCartao"
-            label="Cartão"
-            density="comfortable"
-            class="select"
-          />
-        </div>
-
-        <div class="input-container">
-          <input
-            class="input"
-            type="number"
-            id="vlrTotal"
-            v-model="vlrTotal"
-            required
-            placeholder="Valor total"
-            step=".01"
-            min="0"
-            max="99"
-          />
-        </div>
-
-        <div class="input-container">
-          <input
-            class="input"
-            type="number"
-            id="qtdeParcela"
-            v-model="qtdeParcela"
-            placeholder="Qtde de parcelas"
-            required
-          />
-        </div>
-
-        <div class="input-container">
-          <v-label for="dtLancamento"></v-label>
-          <input
-            class="input"
-            type="date"
-            id="dtLancamento"
-            v-model="dtLancamento"
-            required
-            placeholder="Data de lançamento"
-          />
-        </div>
-
-        <button
-          class="button-custom"
-          @click="cadastrarGasto"
-          style="margin-right: 10px"
-        >
-          Cadastrar
-        </button>
-        <button class="button-custom" @click="cancelar">Cancelar</button>
-      </div>
-    </card>
-
-    <v-card>
-      <div class="grid-gastos">
-        <h2>Lista de gastos</h2>
-        <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left" style="width: 40%">Descrição fatura</th>
-                <th class="text-left" style="width: 35%">
-                  Descrição Personalizada
-                </th>
-                <th class="text-left" style="width: 10%">Grupo</th>
-                <th class="text-left" style="width: 10%">Categoria</th>
-                <th class="text-left" style="width: 10%">Valor</th>
-                <th class="text-left" style="width: 10%"></th>
-                <th class="text-left" style="width: 10%"></th>
-                <th class="text-left" style="width: 10%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="gasto in gastos" :key="gasto.cdGasto">
-                <td>{{ gasto.deFatura }}</td>
-                <td>{{ gasto.deDescricao }}</td>
-                <td>{{ gasto.grupo.deGrupo }}</td>
-                <td>{{ gasto.categoria.deCategoria }}</td>
-                <td>{{ formatarValorMonetario(gasto.vlrTotal) }}</td>
-                <td>
-                  <v-btn class="button-grid" @click="exibirGasto(gasto)"
-                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></v-btn
-                  >
-                </td>
-                <td>
-                  <v-btn
-                    class="button-grid"
-                    @click="
-                      gasto.cdGasto !== undefined
-                        ? excluirGasto(gasto.cdGasto)
-                        : null
-                    "
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </td>
-                <td>
-                  <v-btn class="button-grid" @click="exibirParcelas(gasto)"
-                    ><v-icon>mdi-eye</v-icon></v-btn
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </div>
-    </v-card>
-
-    <ModalParcelas
-      :parcelas="parcelasGasto"
-      :showModal="showModal"
-      @fecharModal="fecharModal"
-    />
+      <ModalParcelas
+        :parcelas="parcelasGasto"
+        :showModal="showModal"
+        @fecharModal="fecharModal"
+      />
+    </div>
   </v-container>
 </template>
 

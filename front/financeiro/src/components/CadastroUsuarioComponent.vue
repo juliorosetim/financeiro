@@ -52,14 +52,13 @@
       </div>
     </v-card>
 
-    <v-card>
+    <v-card style="padding-top: 30px">
       <div class="grid-usuarios">
-        <h2>Lista de Usuários</h2>
+        <h2 style="padding-bottom: 10px">Lista de Usuários</h2>
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left" style="width: 100px">Código</th>
                 <th class="text-left" style="width: 700px">Nome</th>
                 <!-- <th class="text-left" style="width: 100px;">Senha</th> -->
                 <th class="text-left" style="width: 100px"></th>
@@ -70,17 +69,16 @@
             </thead>
             <tbody>
               <tr v-for="usuario in usuarios" :key="usuario.cdUsuario">
-                <td>{{ usuario.cdUsuario }}</td>
                 <td>{{ usuario.deUsuario }}</td>
                 <td></td>
                 <td>{{ usuario.flAtivo }}</td>
                 <td>
-                  <v-btn class="button-grid" @click="exibirUsuario(usuario)"
-                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></v-btn
+                  <span class="button-grid" @click="exibirUsuario(usuario)"
+                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></span
                   >
                 </td>
                 <td>
-                  <v-btn
+                  <span
                     class="button-grid"
                     @click="
                       usuario.cdUsuario !== undefined
@@ -89,7 +87,7 @@
                     "
                   >
                     <v-icon>mdi-delete</v-icon>
-                  </v-btn>
+                  </span>
                 </td>
               </tr>
             </tbody>

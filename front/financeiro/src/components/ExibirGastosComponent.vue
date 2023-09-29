@@ -3,7 +3,8 @@
     <!-- Seção do formulário -->
     <v-card>
       <div class="form-cadastro">
-        <label>Gastos até o dia</label>
+        <h2>Transações</h2>
+        <label>Lançamentos até o dia</label>
         <input
           class="input"
           type="date"
@@ -27,18 +28,17 @@
       </div>
     </v-card> -->
 
-    <v-card>
+    <v-card style="padding-top: 30px">
       <div class="grid-gastos">
-        <h2>Lista de gastos</h2>
+        <h2 style="padding-bottom: 10px">Lista de Lançamentos</h2>
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left" style="width: 40%">Descrição fatura</th>
-                <th class="text-left" style="width: 35%">
-                  Descrição Personalizada
+                <th class="text-left" style="width: 15%">
+                  Descrição do Lançamento
                 </th>
-                <th class="text-left" style="width: 8%">Parcela</th>
+                <th class="text-left" style="width: 20%">Parcela</th>
                 <th class="text-left" style="width: 25%">Cartão</th>
                 <th class="text-left" style="width: 25%">Categoria</th>
                 <th class="text-left" style="width: 10%">Valor</th>
@@ -46,7 +46,6 @@
             </thead>
             <tbody>
               <tr v-for="parcela in parcelasGastos" :key="parcela.cdParcela">
-                <td>{{ parcela.deFatura }}</td>
                 <td>{{ parcela.deDescricao }}</td>
                 <td>{{ parcela.nuParcela }} / {{ parcela.qtdeParcela }}</td>
                 <td>{{ parcela.deCartao }}</td>

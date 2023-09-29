@@ -14,14 +14,17 @@ import { createPinia } from 'pinia';
 
 // Plugins
 import { registerPlugins } from '@/plugins'
-import vuetify from './plugins/vuetify';
+import Vuetify from './plugins/vuetify';
+import 'vuetify/dist/vuetify.min.css';
 
 
 const app = createApp(App)
 const pinia = createPinia();
 
-app.use(vuetify)
+// app.use(vuetify)
+app.use(Vuetify)
 
 registerPlugins(app)
 
 app.mount('#app')
+

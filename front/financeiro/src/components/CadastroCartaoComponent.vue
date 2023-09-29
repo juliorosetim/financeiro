@@ -21,7 +21,7 @@
         <p class="input-container">
           <input
             type="text"
-            placeholder="Dia virada"
+            placeholder="Dia do Fechamento"
             name="diaVirada"
             id="diaVirada"
             class="input"
@@ -34,7 +34,7 @@
         <p class="input-container">
           <input
             type="text"
-            placeholder="Dia vencimento"
+            placeholder="Dia do Vencimento"
             name="diaVencimento"
             id="diaVencimento"
             class="input"
@@ -50,17 +50,15 @@
       </div>
     </v-card>
 
-    <!-- Seção da grid de usuários -->
-    <v-card>
+    <v-card style="padding-top: 30px">
       <div class="grid-cartoes">
-        <h2>Lista de Cartões</h2>
+        <h2 style="padding-bottom: 10px">Lista de Cartões</h2>
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left" style="width: 100px">Código</th>
                 <th class="text-left" style="width: 700px">Nome</th>
-                <th class="text-left" style="width: 100px">Dia virada</th>
+                <th class="text-left" style="width: 100px">Fechamento</th>
                 <th class="text-left" style="width: 100px">Vencimento</th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
@@ -68,7 +66,6 @@
             </thead>
             <tbody>
               <tr v-for="cartao in cartoes" :key="cartao.cdCartao">
-                <td>{{ cartao.cdCartao }}</td>
                 <td>{{ cartao.deCartao }}</td>
                 <td>{{ cartao.diaVirada }}</td>
                 <td>{{ cartao.diaVencimento }}</td>

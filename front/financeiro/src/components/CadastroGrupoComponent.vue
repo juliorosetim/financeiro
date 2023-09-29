@@ -3,7 +3,7 @@
     <!-- Seção do formulário -->
     <v-card>
       <div class="form-cadastro">
-        <h2>Cadastrode grupos</h2>
+        <h2>Cadastro de Grupos</h2>
         <p class="input-container">
           <input
             type="text"
@@ -25,14 +25,13 @@
       </div>
     </v-card>
 
-    <v-card>
+    <v-card style="padding-top: 30px">
       <div class="grid-grupos">
-        <h2>Lista de grupos</h2>
+        <h2 style="padding-bottom: 10px">Lista de Grupos</h2>
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left" style="width: 100px">Código</th>
                 <th class="text-left" style="width: 1000px">Grupo</th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
@@ -40,15 +39,14 @@
             </thead>
             <tbody>
               <tr v-for="grupo in grupos" :key="grupo.cdGrupo">
-                <td>{{ grupo.cdGrupo }}</td>
                 <td>{{ grupo.deGrupo }}</td>
                 <td>
-                  <v-btn class="button-grid" @click="exibirGrupo(grupo)"
-                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></v-btn
+                  <span class="button-grid" @click="exibirGrupo(grupo)"
+                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></span
                   >
                 </td>
                 <td>
-                  <v-btn
+                  <span
                     class="button-grid"
                     @click="
                       grupo.cdGrupo !== undefined
@@ -57,7 +55,7 @@
                     "
                   >
                     <v-icon>mdi-delete</v-icon>
-                  </v-btn>
+                  </span>
                 </td>
               </tr>
             </tbody>

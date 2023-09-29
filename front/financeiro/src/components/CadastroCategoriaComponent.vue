@@ -25,14 +25,13 @@
       </div>
     </v-card>
 
-    <v-card>
+    <v-card style="padding-top: 30px">
       <div class="grid-Categorias">
-        <h2>Lista de Categorias</h2>
+        <h2 style="padding-bottom: 10px">Lista de Categorias</h2>
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left" style="width: 100px">Código</th>
                 <th class="text-left" style="width: 1000px">Categoria</th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
@@ -40,15 +39,14 @@
             </thead>
             <tbody>
               <tr v-for="categoria in categorias" :key="categoria.cdCategoria">
-                <td>{{ categoria.cdCategoria }}</td>
                 <td>{{ categoria.deCategoria }}</td>
                 <td>
-                  <v-btn class="button-grid" @click="exibirCategoria(categoria)"
-                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></v-btn
+                  <span class="button-grid" @click="exibirCategoria(categoria)"
+                    ><v-icon>mdi mdi-text-box-edit-outline</v-icon></span
                   >
                 </td>
                 <td>
-                  <v-btn
+                  <span
                     class="button-grid"
                     @click="
                       categoria.cdCategoria !== undefined
@@ -57,7 +55,7 @@
                     "
                   >
                     <v-icon>mdi-delete</v-icon>
-                  </v-btn>
+                  </span>
                 </td>
               </tr>
             </tbody>
