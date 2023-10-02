@@ -5,6 +5,10 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      padding: '2rem',
+      center: true
+    },
     extend: {
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
@@ -21,9 +25,12 @@ module.exports = {
         amarela: {
           50: "#f4e196"
         }
-      }
+      },
     },
+
   },
-  plugins: [],
+  plugins: [
+
+  ],
 }
 

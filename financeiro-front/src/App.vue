@@ -1,92 +1,118 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "@/components/HelloWorld.vue";
 </script>
 
 <template>
-  <!-- <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-  <HelloWorld />
+  <div>
+    <nav class="flex px-4 border-b md:shadow-lg items-center relative">
+      <div class="text-lg font-bold md:py-0 py-4 text-verde-50">FinanCah</div>
+      <ul
+        class="md:px-2 ml-auto md:flex md:space-x-2 absolute md:relative top-full left-0 right-0"
+      >
+        <li>
+          <a
+            href="/"
+            class="flex md:inline-flex p-4 items-center hover:bg-gray-50"
+          >
+            <span class="text-verde-50">Transações</span>
+          </a>
+        </li>
+        <!-- <li>
+          <a
+            href="#"
+            class="flex md:inline-flex p-4 items-center hover:bg-gray-50"
+          >
+            <span>Products</span>
+          </a>
+        </li> -->
+        <li class="relative parent">
+          <a
+            href="#"
+            class="flex justify-between md:inline-flex p-4 items-center hover:bg-gray-50 space-x-2"
+          >
+            <span class="text-verde-50">Menu</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 fill-current pt-1"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
+              />
+            </svg>
+          </a>
+          <ul
+            class="child transition duration-300 md:absolute top-full right-0 md:w-48 bg-white md:shadow-lg md:rounded-b"
+          >
+            <li class="text-verde-50">
+              <a href="#" class="flex px-4 py-3 hover:bg-gray-50"> Usuário </a>
+            </li>
+            <li class="text-verde-50">
+              <a href="#" class="flex px-4 py-3 hover:bg-gray-50"> Cartão </a>
+            </li>
+            <li class="text-verde-50">
+              <a href="#" class="flex px-4 py-3 hover:bg-gray-50">
+                Forma Pagamento
+              </a>
+            </li>
+            <li class="text-verde-50">
+              <a href="#" class="flex px-4 py-3 hover:bg-gray-50"> Grupo </a>
+            </li>
+            <li class="text-verde-50">
+              <a
+                href="/cadastroCategoria"
+                class="flex px-4 py-3 hover:bg-gray-50"
+              >
+                Categoria
+              </a>
+            </li>
+            <li class="text-verde-50">
+              <a href="#" class="flex px-4 py-3 hover:bg-gray-50">
+                Lançamentos
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="text-verde-50">
+          <a
+            href="#"
+            class="flex md:inline-flex p-4 items-center hover:bg-gray-50"
+          >
+            <span>Sobre</span>
+          </a>
+        </li>
+      </ul>
+      <div class="ml-auto md:hidden text-gray-500 cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 fill-current"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
+          />
+        </svg>
+      </div>
+    </nav>
+  </div>
 
   <RouterView />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+<style>
+@media only screen and (min-width: 768px) {
+  .parent:hover .child {
+    opacity: 1;
+    height: auto;
+    overflow: none;
+    transform: translateY(0);
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+  .child {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transform: translateY(-10%);
   }
 }
 </style>
