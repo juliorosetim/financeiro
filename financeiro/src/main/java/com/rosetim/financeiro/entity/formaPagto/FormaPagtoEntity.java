@@ -24,4 +24,7 @@ public class FormaPagtoEntity {
     @Column(name = "deformapagto")
     @NotNull
     String deFormaPagto;
+
+    @Column(name = "tipo")
+    String tipo;
 }

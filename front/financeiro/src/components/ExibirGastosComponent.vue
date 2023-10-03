@@ -4,29 +4,19 @@
     <v-card>
       <div class="form-cadastro">
         <h2>Transações</h2>
-        <label>Lançamentos até o dia</label>
-        <input
-          class="input"
-          type="date"
-          id="dtFiltro"
-          v-model="dtFiltro"
-          required
-        />
-
+        <div class="input-group">
+          <input
+            class="input"
+            type="date"
+            id="dtFiltro"
+            v-model="dtFiltro"
+            required
+          />
+          <label class="user-label">Lançamentos até o dia</label>
+        </div>
         <button class="button-custom" @click="fetchGastos">Filtrar</button>
       </div>
     </v-card>
-
-    <!-- <v-card>
-      <div>
-        <v-data-table
-          :headers="headers"
-          :items="parcelasGastos"
-          class="elevation-1"
-          density="compact"
-        />
-      </div>
-    </v-card> -->
 
     <v-card style="padding-top: 30px">
       <div class="grid-gastos">

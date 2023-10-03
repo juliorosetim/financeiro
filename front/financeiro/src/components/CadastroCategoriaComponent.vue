@@ -4,16 +4,16 @@
     <v-card>
       <div class="form-cadastro">
         <h2>Cadastro de categoria</h2>
-        <p class="input-container">
+        <div class="input-group">
           <input
             type="text"
             id="deCategoria"
             v-model="deCategoria"
             required
             class="input"
-            placeholder="Categoria"
           />
-        </p>
+          <label class="user-label">Categoria</label>
+        </div>
         <button
           class="button-custom"
           @click="cadastrarCategoria"
@@ -73,6 +73,7 @@ import { Categoria } from "@/type/CategoriaType";
 import "@/assets/css/form-styles.css";
 
 const deCategoria = ref("");
+const cdCategoria = ref<number | null>(null);
 
 const categorias = ref<Categoria[]>([]);
 
@@ -84,11 +85,13 @@ const cadastrarCategoria = () => {
 
   axios
     .post("http://localhost:8081/api/categoria", {
+      cdCategoria: cdCategoria.value,
       deCategoria: deCategoria.value,
     })
     .then((response) => {
       console.log("Categoria cadastrada com sucesso!", response.data);
       deCategoria.value = "";
+      cdCategoria.value = null;
 
       fetchCategorias();
     })
@@ -99,6 +102,7 @@ const cadastrarCategoria = () => {
 
 const cancelar = () => {
   deCategoria.value = "";
+  cdCategoria.value = null;
 };
 
 const fetchCategorias = () => {
@@ -125,6 +129,7 @@ const excluirCategoria = (cdCategoria: number) => {
 };
 
 const exibirCategoria = (categoria: Categoria) => {
+  cdCategoria.value = categoria.cdCategoria;
   deCategoria.value = categoria.deCategoria;
 };
 

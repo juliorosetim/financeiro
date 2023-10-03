@@ -1,0 +1,1 @@
+ALTER TABLE formapgto ADD tipo varchar(30);

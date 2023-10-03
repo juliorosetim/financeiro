@@ -37,15 +37,17 @@ public class GastosService {
     @Transactional(rollbackFor = Throwable.class)
     public void save(GastosEntity gastosEntity) throws Exception {
         try {
-            CartaoEntity cartaoEntity = cartaoService.findbyCdCartao(gastosEntity.getCartao().getCdCartao());
+            if (!Objects.isNull(gastosEntity.getCartao())) {
+                CartaoEntity cartaoEntity = cartaoService.findbyCdCartao(gastosEntity.getCartao().getCdCartao());
+
+                if (Objects.isNull(cartaoEntity)){
+                    gastosEntity.setCartao(null);
+                };
+            }
 
             if ( Objects.isNull(gastosEntity.getQtdeParcela())){
                 gastosEntity.setQtdeParcela(1);
             }
-
-            if (Objects.isNull(cartaoEntity)){
-                gastosEntity.setCartao(null);
-            };
 
             GastosEntity gastoSave = gastosRepository.save(gastosEntity);
 
@@ -320,6 +322,7 @@ public class GastosService {
                         .dtVencimento(dtVencimento)
                         .conferido("N")
                         .nuParcela(i)
+                        .pago(gastoSave.getPago())
                         .build());
             }
 

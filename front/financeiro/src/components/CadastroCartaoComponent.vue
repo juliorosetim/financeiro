@@ -5,43 +5,44 @@
       <div class="form-cadastro">
         <h2>Cadastro de Cartões</h2>
 
-        <p class="input-container">
+        <div class="input-group">
           <input
             type="text"
-            placeholder="Cartão"
             name="deCartao"
             id="deCartao"
             class="input"
             autocomplete="deCartao"
             v-model="deCartao"
+            required
           />
-          <!-- <label class="input-label" for="text">Cartão</label> -->
-        </p>
+          <label class="user-label">Cartão</label>
+        </div>
 
-        <p class="input-container">
+        <div class="input-group">
           <input
             type="text"
-            placeholder="Dia do Fechamento"
             name="diaVirada"
             id="diaVirada"
             class="input"
             autocomplete="diaVirada"
             v-model="diaVirada"
+            required
           />
-          <!-- <label class="input-label" for="text">Name</label> -->
-        </p>
+          <label class="user-label">Dia da Fechamento</label>
+        </div>
 
-        <p class="input-container">
+        <div class="input-group">
           <input
             type="text"
-            placeholder="Dia do Vencimento"
             name="diaVencimento"
             id="diaVencimento"
             class="input"
             autocomplete="diaVencimento"
             v-model="diaVencimento"
+            required
           />
-        </p>
+          <label class="user-label">Dia do Vencimento</label>
+        </div>
 
         <button class="button-custom" @click="cadastrarCartao">
           Cadastrar
@@ -101,6 +102,7 @@ import { ref, onMounted } from "vue";
 import { Cartao } from "@/type/CartaoType";
 import "@/assets/css/form-styles.css";
 
+const cdCartao = ref<number | null>(null);
 const deCartao = ref("");
 const diaVirada = ref("");
 const diaVencimento = ref("");
@@ -125,6 +127,7 @@ const cadastrarCartao = () => {
 
   axios
     .post("http://localhost:8081/api/cartao", {
+      cdCartao: cdCartao.value,
       deCartao: deCartao.value,
       diaVirada: diaVirada.value,
       diaVencimento: diaVencimento.value,
@@ -134,6 +137,7 @@ const cadastrarCartao = () => {
       deCartao.value = "";
       diaVirada.value = "";
       diaVencimento.value = "";
+      cdCartao.value = null;
 
       fetchCartoes();
     })
@@ -146,6 +150,7 @@ const cancelar = () => {
   deCartao.value = "";
   diaVirada.value = "";
   diaVencimento.value = "";
+  cdCartao.value = null;
 };
 
 const fetchCartoes = () => {
@@ -172,6 +177,7 @@ const excluirCartao = (cdCartao: number) => {
 };
 
 const exibirCartao = (cartao: Cartao) => {
+  cdCartao.value = cartao.cdCartao;
   deCartao.value = cartao.deCartao;
   diaVirada.value = cartao.diaVirada;
   diaVencimento.value = cartao.diaVencimento;

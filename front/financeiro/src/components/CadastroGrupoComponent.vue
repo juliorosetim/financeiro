@@ -4,15 +4,15 @@
     <v-card>
       <div class="form-cadastro">
         <h2>Cadastro de Grupos</h2>
-        <p class="input-container">
+        <p class="input-group">
           <input
             type="text"
             id="deGrupo"
             v-model="deGrupo"
             required
             class="input"
-            placeholder="Grupo"
           />
+          <label class="user-label">Grupo</label>
         </p>
         <button
           class="button-custom"
@@ -73,6 +73,7 @@ import { Grupo } from "@/type/GrupoType";
 import "@/assets/css/form-styles.css";
 
 const deGrupo = ref("");
+const cdGrupo = ref<number | null>(null);
 
 const grupos = ref<Grupo[]>([]);
 
@@ -84,11 +85,13 @@ const cadastrarGrupo = () => {
 
   axios
     .post("http://localhost:8081/api/grupo", {
+      cdGrupo: cdGrupo.value,
       deGrupo: deGrupo.value,
     })
     .then((response) => {
       console.log("Grupo cadastrado com sucesso!", response.data);
       deGrupo.value = "";
+      cdGrupo.value = null;
 
       fetchGrupos();
     })
@@ -98,6 +101,7 @@ const cadastrarGrupo = () => {
 };
 
 const cancelar = () => {
+  cdGrupo.value = null;
   deGrupo.value = "";
 };
 
@@ -125,6 +129,7 @@ const excluirGrupo = (cdGrupo: number) => {
 };
 
 const exibirGrupo = (grupo: Grupo) => {
+  cdGrupo.value = grupo.cdGrupo;
   deGrupo.value = grupo.deGrupo;
 };
 

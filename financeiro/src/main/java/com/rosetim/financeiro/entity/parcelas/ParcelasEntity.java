@@ -47,4 +47,7 @@ public class ParcelasEntity {
     @ManyToOne()
     @JoinColumn(name = "cdgasto", referencedColumnName = "cdgasto", insertable = false, updatable = false)
     GastosEntity gasto;
+
+    @Column(name = "pago")
+    String pago;
 }

@@ -4,15 +4,18 @@
     <v-card>
       <div class="form-cadastro">
         <h2>Cadastro Forma Pagamento</h2>
-        <div class="input-container">
+        <div class="input-group">
           <input
             type="text"
             id="deFormaPagto"
             v-model="deFormaPagto"
             required
             class="input"
-            placeholder="Forma de pagamento"
           />
+          <label class="user-label">Forma de Pagamento</label>
+        </div>
+        <div>
+          <v-checkbox-btn label="Cartão?" true-value="Cartão" v-model="tipo" />
         </div>
         <button
           class="button-custom"
@@ -79,7 +82,9 @@ import { ref, onMounted } from "vue";
 import { FormaPagto } from "@/type/FormaPagtoType";
 import "@/assets/css/form-styles.css";
 
+const cdFormaPagto = ref<number | null>(null);
 const deFormaPagto = ref("");
+const tipo = ref("");
 
 const formasPagto = ref<FormaPagto[]>([]);
 
@@ -91,11 +96,15 @@ const cadastrarFormaPagto = () => {
 
   axios
     .post("http://localhost:8081/api/formapagto", {
+      cdFormaPagto: cdFormaPagto.value,
       deFormaPagto: deFormaPagto.value,
+      tipo: tipo.value,
     })
     .then((response) => {
       console.log("Forma pagto cadastrado com sucesso!", response.data);
       deFormaPagto.value = "";
+      cdFormaPagto.value = null;
+      tipo.value = "";
 
       fetchFormaPagto();
     })
@@ -106,6 +115,8 @@ const cadastrarFormaPagto = () => {
 
 const cancelar = () => {
   deFormaPagto.value = "";
+  cdFormaPagto.value = null;
+  tipo.value = "";
 };
 
 const fetchFormaPagto = () => {
@@ -132,7 +143,9 @@ const excluirFormaPagto = (cdFormaPagto: number) => {
 };
 
 const exibirFormaPagto = (formaPagto: FormaPagto) => {
+  cdFormaPagto.value = formaPagto.cdFormaPagto;
   deFormaPagto.value = formaPagto.deFormaPagto;
+  tipo.value = formaPagto.tipo;
 };
 
 onMounted(() => {

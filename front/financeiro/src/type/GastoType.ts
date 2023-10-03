@@ -13,6 +13,7 @@ export type Gasto = {
   formaPagto: {
     cdFormaPagto: number
     deFormaPagto: string
+    tipo: string
   },
   cartao: {
     cdCartao: number
@@ -28,5 +29,7 @@ export type Gasto = {
   usuario: {
     cdUsuario: number
     deUsuario: string
-  }
+  },
+  pago: string;
+  tpLancamento: string;
 }

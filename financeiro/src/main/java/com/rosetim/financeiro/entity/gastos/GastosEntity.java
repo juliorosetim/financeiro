@@ -65,4 +65,10 @@ public class GastosEntity {
 
     @Column(name = "dtlancamento")
     LocalDate dtLancamento;
+
+    @Column(name = "pago")
+    String pago;
+
+    @Column(name = "tplancamento")
+    String tpLancamento;
 }

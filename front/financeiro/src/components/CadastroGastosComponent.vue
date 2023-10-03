@@ -5,20 +5,38 @@
         <div class="form-cadastro">
           <h2>Lançamento</h2>
 
-          <div class="input-container">
-            <v-label for="deDescricao"></v-label>
+          <div class="input-group">
             <input
-              class="input"
-              type="text"
-              id="deDescricao"
               v-model="deDescricao"
+              id="deDescricao"
+              type="text"
+              name="text"
               required
-              placeholder="Descrição do Lançamento"
+              autocomplete="off"
+              class="input"
+            />
+            <label class="user-label">Descrição do Lançamento</label>
+          </div>
+
+          <div class="input-group">
+            <v-select
+              clearable
+              outlined
+              v-model="tpLancamento"
+              :items="tiposLancamentos"
+              item-value="tpLancamento"
+              item-text="deGrupo"
+              item-title="deGrupo"
+              label="Tipo de Lançamento"
+              density="compact"
+              hide-details="true"
+              variant="outlined"
             />
           </div>
 
-          <div class="input-container">
+          <div class="input-group">
             <v-select
+              clearable
               outlined
               v-model="selectedGrupo"
               :items="grupos"
@@ -26,24 +44,32 @@
               item-text="deGrupo"
               item-title="deGrupo"
               label="Grupo"
-              density="comfortable"
+              density="compact"
+              hide-details="true"
+              return-object
+              variant="outlined"
             />
           </div>
 
-          <div class="input-container">
+          <div class="input-group">
             <v-select
+              clearable
               v-model="selectedCategoria"
               :items="categorias"
               item-value="cdCategoria"
               item-text="deCategoria"
               item-title="deCategoria"
               label="Categoria"
-              density="comfortable"
+              density="compact"
+              hide-details="true"
+              return-object
+              variant="outlined"
             />
           </div>
 
-          <div class="input-container">
+          <div class="input-group">
             <v-select
+              clearable
               outlined
               dense
               v-model="selectedFormaPagto"
@@ -52,12 +78,16 @@
               item-text="deFormaPagto"
               item-title="deFormaPagto"
               label="Forma Pagamento"
-              density="comfortable"
+              density="compact"
+              hide-details="true"
+              return-object
+              variant="outlined"
             />
           </div>
 
-          <div class="input-container">
+          <div v-show="habilitaCartao()" class="input-group">
             <v-select
+              clearable
               outlined
               dense
               v-model="selectedCartao"
@@ -66,36 +96,38 @@
               item-text="deCartao"
               item-title="deCartao"
               label="Cartão"
-              density="comfortable"
+              density="compact"
+              hide-details="true"
+              return-object
+              variant="outlined"
             />
           </div>
 
-          <div class="input-container">
+          <div class="input-group">
             <input
               class="input"
               type="number"
               id="vlrTotal"
               v-model="vlrTotal"
               required
-              placeholder="Valor total"
-              step=".01"
-              min="0"
-              max="99"
+              autocomplete="off"
             />
+            <label class="user-label">Valor total</label>
           </div>
 
-          <div class="input-container">
+          <div v-show="!isReceita()" class="input-group">
             <input
               class="input"
               type="number"
               id="qtdeParcela"
               v-model="qtdeParcela"
-              placeholder="Quantidade de parcelas"
               required
+              autocomplete="off"
             />
+            <label class="user-label">Quantidade de parcelas</label>
           </div>
 
-          <div class="input-container">
+          <div class="input-group">
             <v-label for="dtLancamento"></v-label>
             <input
               class="input"
@@ -103,18 +135,27 @@
               id="dtLancamento"
               v-model="dtLancamento"
               required
-              placeholder="Data de lançamento"
+              autocomplete="off"
             />
+            <label class="user-label">Data de lançamento</label>
           </div>
 
-          <div class="input-container">
+          <div class="input-group">
             <input
               class="input"
               type="text"
               id="deFatura"
               v-model="deFatura"
               required
-              placeholder="Observação"
+            />
+            <label class="user-label">Observação</label>
+          </div>
+          <div>
+            <v-checkbox-btn
+              label="Pago"
+              true-value="S"
+              false-value="N"
+              v-model="pago"
             />
           </div>
           <button
@@ -153,6 +194,11 @@
                   <td>{{ gasto.categoria.deCategoria }}</td>
                   <td>{{ formatarValorMonetario(gasto.vlrTotal) }}</td>
                   <td>
+                    <span class="button-grid" @click="exibirParcelas(gasto)"
+                      ><v-icon>mdi-eye</v-icon></span
+                    >
+                  </td>
+                  <td>
                     <span class="button-grid" @click="exibirGasto(gasto)"
                       ><v-icon>mdi mdi-text-box-edit-outline</v-icon></span
                     >
@@ -168,11 +214,6 @@
                     >
                       <v-icon>mdi-delete</v-icon>
                     </span>
-                  </td>
-                  <td>
-                    <span class="button-grid" @click="exibirParcelas(gasto)"
-                      ><v-icon>mdi-eye</v-icon></span
-                    >
                   </td>
                 </tr>
               </tbody>
@@ -192,7 +233,7 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted } from "vue";
 import { Cartao } from "@/type/CartaoType";
 import { Grupo } from "@/type/GrupoType";
 import { FormaPagto } from "@/type/FormaPagtoType";
@@ -224,8 +265,20 @@ const deFatura = ref("");
 const deDescricao = ref("");
 const qtdeParcela = ref<number | null>(null);
 const vlrTotal = ref<number | null>(null);
+const pago = ref("");
+const tpLancamento = ref("");
 
 const showModal = ref(false);
+
+const tiposLancamentos = ref(["Receita", "Despesa"]);
+
+function habilitaCartao(): boolean {
+  return selectedFormaPagto.value?.tipo == "Cartão";
+}
+
+function isReceita(): boolean {
+  return tpLancamento.value == "Receita";
+}
 
 const obterDataAtualFormatada = () => {
   const dataAtual = new Date();
@@ -307,22 +360,16 @@ const cadastrarGasto = () => {
       .post("http://localhost:8081/api/gastos", {
         deFatura: deFatura.value,
         deDescricao: deDescricao.value,
-        grupo: {
-          cdGrupo: selectedGrupo.value,
-        },
-        categoria: {
-          cdCategoria: selectedCategoria.value,
-        },
-        formaPagto: {
-          cdFormaPagto: selectedFormaPagto.value,
-        },
-        cartao: {
-          cdCartao: selectedCartao.value,
-        },
+        grupo: selectedGrupo.value,
+        categoria: selectedCategoria.value,
+        formaPagto: selectedFormaPagto.value,
+        cartao: selectedCartao.value,
         qtdeParcela: qtdeParcela.value,
         vlrParcela: 0,
         vlrTotal: vlrTotal.value,
         dtLancamento: dtLancamento.value,
+        pago: pago.value,
+        tpLancamento: tpLancamento.value,
         usuario: {
           cdUsuario: 1,
         },
@@ -338,6 +385,8 @@ const cadastrarGasto = () => {
         qtdeParcela.value = 1;
         vlrTotal.value = 0;
         dtLancamento.value = obterDataAtualFormatada();
+        pago.value = "";
+        tpLancamento.value = "";
         fetchGastos();
       })
       .catch((error) => {
@@ -350,14 +399,16 @@ const cadastrarGasto = () => {
         cdGasto: cdGasto.value,
         deFatura: deFatura.value,
         deDescricao: deDescricao.value,
-        grupo: { cdGrupo: selectedGrupo.value },
-        categoria: { cdCategoria: selectedCategoria.value },
-        formaPagto: { cdFormaPagto: selectedFormaPagto.value },
-        cartao: { cdCartao: selectedCartao.value },
+        grupo: selectedGrupo.value,
+        categoria: selectedCategoria.value,
+        formaPagto: selectedFormaPagto.value,
+        cartao: selectedCartao.value,
         qtdeParcela: qtdeParcela.value,
         vlrParcela: 0,
         vlrTotal: vlrTotal.value,
         dtLancamento: dtLancamento.value,
+        pago: pago.value,
+        tpLancamento: tpLancamento.value,
         usuario: {
           cdUsuario: 1,
         },
@@ -373,7 +424,9 @@ const cadastrarGasto = () => {
         selectedCartao.value = null;
         qtdeParcela.value = null;
         vlrTotal.value = null;
+        pago.value = "";
         dtLancamento.value = obterDataAtualFormatada();
+        tpLancamento.value = "";
         fetchGastos();
       })
       .catch((error) => {
@@ -396,6 +449,8 @@ function cancelar() {
   vlrTotal.value = null;
   dtLancamento.value = obterDataAtualFormatada();
   isEditing.value = false;
+  pago.value = "";
+  tpLancamento.value = "";
 }
 
 const excluirGasto = (cdGasto: number) => {
@@ -421,6 +476,8 @@ const exibirGasto = (gasto: Gasto) => {
   qtdeParcela.value = gasto.qtdeParcela;
   vlrTotal.value = gasto.vlrTotal;
   dtLancamento.value = gasto.dtLancamento;
+  pago.value = gasto.pago;
+  tpLancamento.value = gasto.tpLancamento;
 
   isEditing.value = true;
 };
@@ -440,11 +497,10 @@ onMounted(() => {
   fetchCartoes();
   fetchGrupos();
   fetchFormasPagto();
-  fetchCategoria();
   fetchGastos();
+  fetchCategoria();
 
   isEditing.value = false;
-  // qtdeParcela.value = 1;
   dtLancamento.value = obterDataAtualFormatada();
 });
 
