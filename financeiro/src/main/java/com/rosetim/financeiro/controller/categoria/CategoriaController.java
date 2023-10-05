@@ -32,7 +32,7 @@ public class CategoriaController {
 
     @DeleteMapping("/{cdCategoria}")
     public ResponseEntity delete(@PathVariable Long cdCategoria) throws Exception {
-        categoriaService.delete(cdCategoria);
+        categoriaService.deleteById(cdCategoria);
 
         return ResponseEntity.status(HttpStatus.OK).body("Categoria deletada com sucesso!");
     }

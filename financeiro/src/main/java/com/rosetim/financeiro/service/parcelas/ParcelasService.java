@@ -1,7 +1,9 @@
 package com.rosetim.financeiro.service.parcelas;
 
+import com.rosetim.financeiro.dto.GastosAgrupadosDto;
 import com.rosetim.financeiro.dto.ParcelasGastosDto;
 import com.rosetim.financeiro.entity.parcelas.ParcelasEntity;
+import com.rosetim.financeiro.exception.CustomException;
 import com.rosetim.financeiro.repository.parcelas.ParcelasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +47,9 @@ public class ParcelasService {
         }
     }
 
-    public List<ParcelasGastosDto> findParcelasByData(LocalDate dtProximaParcela, LocalDate dtHoje) throws Exception {
+    public List<ParcelasGastosDto> findParcelasByData(LocalDate dtInicio, LocalDate dtFim) throws Exception {
         try {
-            List<Object[]> parcelas = parcelasRepository.findParcelasByData(dtProximaParcela, dtHoje);
+            List<Object[]> parcelas = parcelasRepository.findParcelasByData(dtInicio, dtFim);
 
             List<ParcelasGastosDto> dtos = new ArrayList<>();
             for (Object[] result : parcelas) {
@@ -98,6 +100,96 @@ public class ParcelasService {
             return dtos;
         }catch (Exception e){
             throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<GastosAgrupadosDto> gastosAgrupadosPorCartao(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> parcelasGroupByCartao = parcelasRepository.findParcelasGroupByCartao(dtInicio, dtFim);
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : parcelasGroupByCartao) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) result[0]);
+                dto.setVlrTotal((BigDecimal) result[1]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter totais por Cartão");
+        }
+    }
+
+    public List<GastosAgrupadosDto> gastosAgrupadosPorFormaPgto(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> parcelasGroupByFormaPgto = parcelasRepository.findParcelasGroupByFormaPgto(dtInicio, dtFim);
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : parcelasGroupByFormaPgto) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) result[0]);
+                dto.setVlrTotal((BigDecimal) result[1]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter totais por Forma de pagamento");
+        }
+    }
+
+    public List<GastosAgrupadosDto> gastosAgrupadosPorCategoria(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> categoriaGroup = parcelasRepository.findParcelasGroupByCategoria(dtInicio, dtFim);
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : categoriaGroup) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) result[0]);
+                dto.setVlrTotal((BigDecimal) result[1]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter totais por categorias");
+        }
+    }
+
+    public List<GastosAgrupadosDto> gastosAgrupadosPorGrupo(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> parcelasGroupByGrupo = parcelasRepository.findParcelasGroupByGrupo(dtInicio, dtFim);
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : parcelasGroupByGrupo) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) result[0]);
+                dto.setVlrTotal((BigDecimal) result[1]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter totais por Grupo");
+        }
+    }
+
+    public List<GastosAgrupadosDto> gastosAgrupadosPorDatas(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> parcelasPorDatas = parcelasRepository.findParcelasPorDatas(dtInicio, dtFim);
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : parcelasPorDatas) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) "Datas");
+                dto.setVlrTotal((BigDecimal) result[0]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter totais por Datas");
         }
     }
 

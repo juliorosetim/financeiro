@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "categoria")
 @AllArgsConstructor
@@ -24,4 +26,7 @@ public class CategoriaEntity {
     @Column(name = "decategoria")
     @NotNull
     String deCategoria;
+
+    @Column(name = "metamensal")
+    BigDecimal metaMensal;
 }

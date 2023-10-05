@@ -57,7 +57,7 @@ public class GastosService {
                         .divide(BigDecimal.valueOf(gastosEntity.getQtdeParcela()), MathContext.DECIMAL64);
 
                 LocalDate dtVencimento = dataVencimento(gastosEntity.getDtLancamento(),
-                        gastosEntity.getDtLancamento().getDayOfMonth(), i);
+                        gastosEntity.getDtLancamento().getDayOfMonth(), i );
                 //LocalDate dtVencimento = dataVencimento(cartaoEntity, i);
 
                 parcelasInserir.add(ParcelasEntity
@@ -86,11 +86,11 @@ public class GastosService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        if(parcela > 1 ){
-            calendar.add(Calendar.MONTH, parcela -1);
-        }
+//        if(parcela > 1 ){
+//            calendar.add(Calendar.MONTH, parcela -1);
+//        }
 
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + (parcela -1),
                 diaVencimento);
 
         Date novoVencimento = calendar.getTime();
@@ -100,104 +100,17 @@ public class GastosService {
         return localDate;
     }
 
-//---------QUASE ---------------------
-//    private static LocalDate dataVencimento(LocalDate dtLancamento, CartaoEntity cartaoEntity, Integer parcela) {
-//        LocalDate dataVencimento = getData(cartaoEntity.getDiaVencimento(),9,2023); // sempre recebe a data atual
-//        LocalDate dataVirada = getData(cartaoEntity.getDiaVirada(), 9,2023);
-//        LocalDate dataLancamento = getData(25,9,2023);
-//
-////        LocalDate dataVencimento = getDataVencimento(cartaoEntity.getDiaVencimento());
-////
-////        LocalDate dataVirada = getDataVirada(cartaoEntity.getDiaVirada());
-////
-////        LocalDate dataLancamento = LocalDate.now();
-////        if (!Objects.isNull(dtLancamento)) {
-////            dataLancamento = dtLancamento;
-////        }
-//
+//    private static LocalDate dataVencimento(LocalDate dataVencimento, Integer diaVencimento, Integer parcela) {
 //        Date date = convertDate(dataVencimento);
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.setTime(date);
 //
-//        if(dataLancamento.isAfter(dataVirada) || dataLancamento.isEqual(dataVirada) ){
-//            if(dataLancamento.isBefore(dataVencimento) || dataLancamento.isEqual(dataVencimento) ){
-//                calendar.add(Calendar.MONTH, parcela);
-//            }else{
-//                calendar.add(Calendar.MONTH, parcela + 1);
-//            }
-//        }
-//        else{
-//            calendar.add(Calendar.MONTH, parcela);
+//        if(parcela > 1 ){
+//            calendar.add(Calendar.MONTH, parcela -1);
 //        }
 //
-//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) ,
-//                cartaoEntity.getDiaVencimento());
-//
-//        Date novoVencimento = calendar.getTime();
-//
-//        Instant instant = novoVencimento.toInstant();
-//        LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-//        return localDate;
-//    }
-
-
-//    private static LocalDate dataVencimento(LocalDate dtLancamento, CartaoEntity cartaoEntity, Integer parcela) {
-//        LocalDate dataVencimento = getData(cartaoEntity.getDiaVencimento(),10,2023); // sempre recebe a data atual
-//        LocalDate dataVirada = getData(cartaoEntity.getDiaVirada(), 10,2023);
-//        LocalDate dataLancamento = getData(05,10,2023);
-//        LocalDate dataProximoVencimento = getProximaDataVencimento(dataVencimento, cartaoEntity.getDiaVencimento());
-//        LocalDate dataProximaVirada = getProximaVirada(dataVirada, cartaoEntity.getDiaVirada());
-//
-////        LocalDate dataVencimento = getDataVencimento(cartaoEntity.getDiaVencimento());
-////
-////        LocalDate dataVirada = getDataVirada(cartaoEntity.getDiaVirada());
-////
-////        LocalDate dataLancamento = LocalDate.now();
-////        if (!Objects.isNull(dtLancamento)) {
-////            dataLancamento = dtLancamento;
-////        }
-//
-//        Date date = convertDate(dataVencimento);
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(date);
-//
-////        if(dataLancamento.isBefore(dataVirada) || dataLancamento.isEqual(dataVirada)){
-////            calendar.add(Calendar.MONTH, parcela);
-////        }
-//
-//        if((dataLancamento.isAfter(dataVirada) || dataLancamento.isEqual(dataVirada)) &&
-//           (dataLancamento.getMonth().getValue() != dataProximoVencimento.getMonth().getValue())){
-//            calendar.add(Calendar.MONTH, parcela + 1);
-//        }
-//
-//        if((dataLancamento.isAfter(dataVirada) || dataLancamento.isEqual(dataVirada)) &&
-//                (dataLancamento.getMonth().getValue() == dataProximoVencimento.getMonth().getValue())){
-//            calendar.add(Calendar.MONTH, parcela);
-//        }
-//
-//        if((dataLancamento.isBefore(dataVirada) || dataLancamento.isEqual(dataVirada)) &&
-//                (dataLancamento.getMonth().getValue() == dataProximoVencimento.getMonth().getValue())){
-//            calendar.add(Calendar.MONTH, parcela + 1);
-//        }
-//
-//
-//
-////        if( (dataLancamento.isAfter(dataVirada) || dataLancamento.isEqual(dataVirada)) &&
-////                (dataLancamento.isBefore(dataProximaVirada) || dataLancamento.isEqual(dataProximaVirada))){
-////            calendar.add(Calendar.MONTH, parcela);
-////        }
-//
-//
-////        if((dataLancamento.isAfter(dataVirada) || dataLancamento.isEqual(dataVirada)) ||
-////                (dataLancamento.isAfter(dataProximaVirada) || dataLancamento.isEqual(dataProximaVirada)) &&
-////                (dataLancamento.isAfter(dataVencimento) && dataLancamento.isAfter(dataProximoVencimento) )){
-////                calendar.add(Calendar.MONTH, parcela);
-////        }else{
-////            calendar.add(Calendar.MONTH, parcela + 1);
-////        }
-//
-//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) ,
-//                cartaoEntity.getDiaVencimento());
+//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
+//                diaVencimento);
 //
 //        Date novoVencimento = calendar.getTime();
 //

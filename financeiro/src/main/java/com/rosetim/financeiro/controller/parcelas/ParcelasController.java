@@ -1,5 +1,6 @@
 package com.rosetim.financeiro.controller.parcelas;
 
+import com.rosetim.financeiro.dto.GastosAgrupadosDto;
 import com.rosetim.financeiro.dto.ParcelasGastosDto;
 import com.rosetim.financeiro.entity.parcelas.ParcelasEntity;
 import com.rosetim.financeiro.service.parcelas.ParcelasService;
@@ -31,18 +32,9 @@ public class ParcelasController {
         return ResponseEntity.status(HttpStatus.OK).body(allParcelas);
     }
 
-    @GetMapping("/parcelas-por-datas/{dtFiltro}")
-    public ResponseEntity findParcelasByData(@PathVariable LocalDate dtFiltro) throws Exception {
-        LocalDate dtHoje = LocalDate.now();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(dtFiltro.getYear(), dtFiltro.getMonthValue() -1,
-                10);
-
-        Instant instant = calendar.toInstant();
-        LocalDate dtProximaParcela = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-
-        List<ParcelasGastosDto> parcelasByData = parcelasService.findParcelasByData(dtProximaParcela, dtHoje);
+    @GetMapping("/parcelas-por-datas/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity findParcelasByData(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<ParcelasGastosDto> parcelasByData = parcelasService.findParcelasByData(dtFiltroInicio, dtFiltroFim);
 
         return ResponseEntity.status(HttpStatus.OK).body(parcelasByData);
     }
@@ -54,4 +46,40 @@ public class ParcelasController {
 
         return ResponseEntity.status(HttpStatus.OK).body(parcelasByData);
     }
+
+    @GetMapping("/totais-por-cartoes/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisPorCartoes(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.gastosAgrupadosPorCartao(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
+    @GetMapping("/totais-por-forma-pgto/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisPorFormaPgto(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.gastosAgrupadosPorFormaPgto(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
+    @GetMapping("/totais-por-categorias/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisPorCategorias(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.gastosAgrupadosPorCategoria(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
+    @GetMapping("/totais-por-grupo/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisPorGrupo(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.gastosAgrupadosPorGrupo(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
+    @GetMapping("/totais-por-datas/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisPorDatas(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.gastosAgrupadosPorDatas(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
 }
