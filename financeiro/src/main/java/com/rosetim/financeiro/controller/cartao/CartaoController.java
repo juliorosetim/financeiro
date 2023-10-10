@@ -7,6 +7,7 @@ import com.rosetim.financeiro.service.formaPagto.FormaPagtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class CartaoController {
     CartaoService cartaoService;
 
     @PostMapping
-    public ResponseEntity save(@RequestBody CartaoEntity cartaoEntity) throws Exception {
+    public ResponseEntity save(@Validated @RequestBody CartaoEntity cartaoEntity) throws Exception {
         CartaoEntity save = cartaoService.save(cartaoEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(save);

@@ -5,6 +5,7 @@ import com.rosetim.financeiro.service.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody UsuarioEntity usuarioEntity) throws Exception {
+    public ResponseEntity<?> save(@Validated @RequestBody UsuarioEntity usuarioEntity) throws Exception {
         UsuarioEntity save = usuarioService.save(usuarioEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(save);

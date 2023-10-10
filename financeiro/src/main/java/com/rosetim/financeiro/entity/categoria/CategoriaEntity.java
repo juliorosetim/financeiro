@@ -1,11 +1,12 @@
 package com.rosetim.financeiro.entity.categoria;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 
@@ -24,7 +25,8 @@ public class CategoriaEntity {
     Long cdCategoria;
 
     @Column(name = "decategoria")
-    @NotNull
+    @NotNull(message = "Categoria deve ser preenchida")
+    @NotBlank(message = "Categoria deve ser preenchida")
     String deCategoria;
 
     @Column(name = "metamensal")

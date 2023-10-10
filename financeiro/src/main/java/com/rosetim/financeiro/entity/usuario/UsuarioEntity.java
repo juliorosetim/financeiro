@@ -1,6 +1,8 @@
 package com.rosetim.financeiro.entity.usuario;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,8 +23,12 @@ public class UsuarioEntity {
     Long cdUsuario;
 
     @Column(name = "deusuario")
+    @NotNull(message = "Usuário deve ser preenchido")
+    @NotBlank(message = "Usuário deve ser preenchido")
     String deUsuario;
 
+    @NotNull(message = "Senha deve ser preenchida")
+    @NotBlank(message = "Senha deve ser preenchida")
     String senha;
 
     @Column(name = "flativo")

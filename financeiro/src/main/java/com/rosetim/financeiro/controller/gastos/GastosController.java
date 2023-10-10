@@ -5,6 +5,7 @@ import com.rosetim.financeiro.service.gastos.GastosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class GastosController {
     GastosService gastosService;
 
     @PostMapping
-    public ResponseEntity save(@RequestBody GastosEntity gastosEntity) throws Exception {
+    public ResponseEntity save(@Validated @RequestBody GastosEntity gastosEntity) throws Exception {
         gastosService.save(gastosEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Gastos salvos com sucesso!");

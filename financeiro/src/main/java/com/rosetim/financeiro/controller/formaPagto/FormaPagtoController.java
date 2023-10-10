@@ -5,6 +5,7 @@ import com.rosetim.financeiro.service.formaPagto.FormaPagtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class FormaPagtoController {
     FormaPagtoService formaPagtoService;
 
     @PostMapping
-    public ResponseEntity save(@RequestBody FormaPagtoEntity formaPagtoEntity) throws Exception {
+    public ResponseEntity save(@Validated @RequestBody FormaPagtoEntity formaPagtoEntity) throws Exception {
         FormaPagtoEntity save = formaPagtoService.save(formaPagtoEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(save);

@@ -1,11 +1,12 @@
 package com.rosetim.financeiro.entity.cartao;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
 
@@ -24,12 +25,16 @@ public class CartaoEntity {
     Long cdCartao;
 
     @Column(name = "decartao")
-    @NotNull
+    @NotNull(message = "Cartão deve ser preenchido")
+    @NotBlank(message = "Cartão deve ser preenchido")
     String deCartao;
 
     @Column(name = "diavirada")
+    @NotNull(message = "Dia do fechamento deve ser preenchida")
     Integer diaVirada;
 
     @Column(name = "diavencimento")
+    @NotNull(message = "Dia do vencimento deve ser preenchido")
+//    @NotBlank(message = "Dia do vencimento deve ser preenchido")
     Integer diaVencimento;
 }

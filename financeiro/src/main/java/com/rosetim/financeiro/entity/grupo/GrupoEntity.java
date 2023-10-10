@@ -1,11 +1,12 @@
 package com.rosetim.financeiro.entity.grupo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Table(name = "grupo")
@@ -22,6 +23,7 @@ public class GrupoEntity {
     Long cdGrupo;
 
     @Column(name = "degrupo")
-    @NotNull
+    @NotNull(message = "Grupo deve ser preenchido")
+    @NotBlank(message = "Grupo deve ser preenchido")
     String deGrupo;
 }

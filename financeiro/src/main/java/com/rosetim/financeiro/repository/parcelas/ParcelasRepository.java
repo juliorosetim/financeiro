@@ -63,4 +63,13 @@ public interface ParcelasRepository extends JpaRepository<ParcelasEntity, Long> 
             "where p.dtVencimento >= :dtInicio and p.dtVencimento <= :dtFim" )
     List<Object[]> findParcelasPorDatas(@Param("dtInicio") LocalDate dtInicio,
                                             @Param("dtFim") LocalDate dtFim);
+
+    @Query("Select  sum(p.vlrParcela) from ParcelasEntity p " +
+            " join GastosEntity g on p.cdGasto = g.cdGasto " +
+            " where p.dtVencimento >= :dtInicio and p.dtVencimento <= :dtFim" +
+            " and g.tpLancamento = :tpLancamento" )
+    List<Object[]> findReceitasDespesas(@Param("dtInicio") LocalDate dtInicio,
+                                        @Param("dtFim") LocalDate dtFim, @Param("tpLancamento") String tpLancamento);
+
 }
+

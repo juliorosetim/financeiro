@@ -193,4 +193,41 @@ public class ParcelasService {
         }
     }
 
+
+    public List<GastosAgrupadosDto> getDespesas(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> parcelasPorDatas = parcelasRepository.findReceitasDespesas(dtInicio, dtFim, "Despesa");
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : parcelasPorDatas) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) "Despesas");
+                dto.setVlrTotal((BigDecimal) result[0]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter despesas totais");
+        }
+    }
+
+    public List<GastosAgrupadosDto> getReceitas(LocalDate dtInicio, LocalDate dtFim){
+        try{
+            List<Object[]> parcelasPorDatas = parcelasRepository.findReceitasDespesas(dtInicio, dtFim, "Receita");
+
+            List<GastosAgrupadosDto> totais = new ArrayList<>();
+            for (Object[] result : parcelasPorDatas) {
+                GastosAgrupadosDto dto = new GastosAgrupadosDto();
+                dto.setDeDescricao((String) "Receitas");
+                dto.setVlrTotal((BigDecimal) result[0]);
+                totais.add(dto);
+            }
+
+            return totais;
+        }catch (Exception e){
+            throw new CustomException("Não foi possível obter receitas totais");
+        }
+    }
+
 }

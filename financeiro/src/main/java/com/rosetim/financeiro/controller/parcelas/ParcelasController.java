@@ -82,4 +82,18 @@ public class ParcelasController {
         return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
     }
 
+    @GetMapping("/totais-despesas/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisDespesas(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.getDespesas(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
+    @GetMapping("/totais-receitas/{dtFiltroInicio}/{dtFiltroFim}")
+    public ResponseEntity totaisReceitas(@PathVariable LocalDate dtFiltroInicio, @PathVariable LocalDate dtFiltroFim) throws Exception {
+        List<GastosAgrupadosDto> gastosAgrupadosDtos = parcelasService.getReceitas(dtFiltroInicio, dtFiltroFim);
+
+        return ResponseEntity.status(HttpStatus.OK).body(gastosAgrupadosDtos);
+    }
+
 }
