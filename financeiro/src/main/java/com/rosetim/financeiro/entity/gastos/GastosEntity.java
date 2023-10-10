@@ -37,23 +37,18 @@ public class GastosEntity {
     String deFatura;
 
     @Column(name = "dedescricao")
-    @NotNull(message = "Descrição do lançamento deve ser preenchida")
-    @NotBlank(message = "Descrição do lançamento deve ser preenchida")
     String deDescricao;
 
     @OneToOne()
     @JoinColumn(name = "cdgrupo")
-    @NotNull(message = "Grupo deve ser preenchido")
     GrupoEntity grupo;
 
     @OneToOne()
     @JoinColumn(name = "cdcategoria")
-    @NotNull(message = "Categoria deve ser preenchida")
     CategoriaEntity categoria;
 
     @OneToOne()
     @JoinColumn(name = "cdformaPagto")
-    @NotNull(message = "Forma de pagamento deve ser preenchida")
     FormaPagtoEntity formaPagto;
 
     @ManyToOne(optional = true)
@@ -65,8 +60,6 @@ public class GastosEntity {
     Integer qtdeParcela;
 
     @Column(name = "vlrtotal")
-    @NotNull(message = "Valor total deve ser preenchido")
-//    @Digits(integer = 12, fraction = 3, message = "Valor da taxa inválida")
     BigDecimal vlrTotal;
 
     @OneToOne()
@@ -74,15 +67,11 @@ public class GastosEntity {
     UsuarioEntity usuario;
 
     @Column(name = "dtlancamento")
-    @NotNull(message = "Data de lançamento deve ser preenchido")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate dtLancamento;
 
     @Column(name = "pago")
     String pago;
 
     @Column(name = "tplancamento")
-    @NotNull(message = "Tipo de lançamento deve ser preenchido")
-    @NotBlank(message = "Tipo de lançamento deve ser preenchido")
     String tpLancamento;
 }

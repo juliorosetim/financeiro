@@ -18,7 +18,7 @@ public class GastosController {
     GastosService gastosService;
 
     @PostMapping
-    public ResponseEntity save(@Validated @RequestBody GastosEntity gastosEntity) throws Exception {
+    public ResponseEntity save(@RequestBody GastosEntity gastosEntity) throws Exception {
         gastosService.save(gastosEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Gastos salvos com sucesso!");
