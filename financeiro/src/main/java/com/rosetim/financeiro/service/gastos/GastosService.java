@@ -56,9 +56,18 @@ public class GastosService {
                 BigDecimal vlrParcela = gastosEntity.getVlrTotal()
                         .divide(BigDecimal.valueOf(gastosEntity.getQtdeParcela()), MathContext.DECIMAL64);
 
-                LocalDate dtVencimento = dataVencimento(gastosEntity.getDtLancamento(),
-                        gastosEntity.getDtLancamento().getDayOfMonth(), i );
-                //LocalDate dtVencimento = dataVencimento(cartaoEntity, i);
+                Integer diaVencimento = null;
+
+                if ( gastoSave.getFormaPagto().getTipo().equals("Cartão") && Objects.nonNull(gastosEntity.getCartao()) ) {
+                    diaVencimento = gastosEntity.getCartao().getDiaVencimento();
+                }
+
+                LocalDate dtVencimento = null;
+                if (Objects.nonNull(diaVencimento)) {
+                     dtVencimento = dataVencimento(gastosEntity.getDtLancamento(), diaVencimento, i);
+                }else{
+                   dtVencimento = gastosEntity.getDtLancamento();
+                }
 
                 parcelasInserir.add(ParcelasEntity
                         .builder()
